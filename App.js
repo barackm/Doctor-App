@@ -1,21 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// import { StatusBar } from "expo-status-bar";
+import React, { useRef } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import colors from "./app/config/colors";
+import { NavigationContainer } from "@react-navigation/native";
+import AppNavigator from "./app/navigation/AppNavigator";
+import BookingCalenderScreen from "./app/screens/BookingCalenderScreen";
+import DoctorProfileScreen from "./app/screens/DoctorProfileScreen";
+import AuthNavigator from "./app/navigation/AuthNavigator";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <AppNavigator />
+      {/* <AuthNavigator /> */}
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: colors.light,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
