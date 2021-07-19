@@ -1,14 +1,15 @@
-import React from "react";
-import DoctorsListScreen from "../screens/DoctorsListScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { FontAwesome } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet, View, Text } from "react-native";
-import colors from "../config/colors";
-import ChatNavigator from "./ChatNavigator";
-import DoctorNavigator from "./DoctorsNavigator";
+import React from 'react';
+import DoctorsListScreen from '../screens/DoctorsListScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { StyleSheet, View, Text } from 'react-native';
+import colors from '../config/colors';
+import ChatNavigator from './ChatNavigator';
+import DoctorNavigator from './DoctorsNavigator';
+import ProfileScreen from '../screens/ProfileScreen';
+import ProfileNavigator from './ProfileNavigator';
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => (
@@ -20,7 +21,7 @@ const AppNavigator = () => (
     }}
   >
     <Tab.Screen
-      name="Messages"
+      name='Messages'
       component={ChatNavigator}
       options={{
         tabBarIcon: ({ color, focused }) => (
@@ -36,7 +37,7 @@ const AppNavigator = () => (
             ]}
           >
             <Ionicons
-              name="chatbubbles-outline"
+              name='chatbubbles-outline'
               size={24}
               color={focused ? colors.white : colors.primary}
             />
@@ -46,7 +47,7 @@ const AppNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Doctors"
+      name='Doctors'
       component={DoctorNavigator}
       options={{
         tabBarIcon: ({ size, color, focused }) => (
@@ -62,7 +63,7 @@ const AppNavigator = () => (
             ]}
           >
             <FontAwesome
-              name="stethoscope"
+              name='stethoscope'
               size={24}
               color={focused ? colors.white : colors.primary}
             />
@@ -72,8 +73,8 @@ const AppNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Menu"
-      component={DoctorsListScreen}
+      name='Menu'
+      component={ProfileNavigator}
       options={{
         tabBarIcon: ({ size, color, focused }) => (
           <View
@@ -87,12 +88,12 @@ const AppNavigator = () => (
               },
             ]}
           >
-            <MaterialCommunityIcons
-              name="view-dashboard-outline"
+            <Entypo
+              name='user'
               size={24}
               color={focused ? colors.white : colors.primary}
             />
-            {focused && <Text style={styles.tabItemText}>Menu</Text>}
+            {focused && <Text style={styles.tabItemText}>Profile</Text>}
           </View>
         ),
       }}
@@ -102,13 +103,13 @@ const AppNavigator = () => (
 
 const styles = StyleSheet.create({
   tabItemContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabItemText: {
     marginLeft: 5,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.white,
   },
 });
