@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -6,28 +6,27 @@ import {
   View,
   TouchableOpacity,
   Image,
-} from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
-import Screen from "../components/Screen";
-import colors from "../config/colors";
-import style from "../config/style";
-import ListItem from "../components/ListItem";
+} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import Screen from '../components/Screen';
+import colors from '../config/colors';
+import style from '../config/style';
+import ListItem from '../components/ListItem';
 
 function TopDoctorsListItem({ navigation }) {
   return (
     <TouchableOpacity
       style={styles.topDoctorsContainer}
-      onPress={() => navigation.navigate("Profile")}
+      onPress={() => navigation.navigate('Doctor')}
     >
       <View style={styles.topDoctorImageContainer}>
         <Image
           style={styles.topDoctorImage}
           source={{
-            uri:
-              "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
           }}
         />
       </View>
@@ -43,7 +42,7 @@ function TopDoctorsListItem({ navigation }) {
             {[1, 2, 3, 4, 5].map((item) => (
               <FontAwesome
                 key={item}
-                name="star"
+                name='star'
                 size={15}
                 color={colors.gold}
               />
@@ -57,10 +56,10 @@ function TopDoctorsListItem({ navigation }) {
 }
 export default function DoctorsListScreen({ active = false, navigation }) {
   const categories = [
-    { id: 1, name: "Dentists", number: 20, active: true },
-    { id: 2, name: "Cardiologist", number: 10, active: false },
-    { id: 3, name: "Psychiator", number: 5, active: false },
-    { id: 4, name: "Psychologist", number: 5, active: false },
+    { id: 1, name: 'Dentists', number: 20, active: true },
+    { id: 2, name: 'Cardiologist', number: 10, active: false },
+    { id: 3, name: 'Psychiator', number: 5, active: false },
+    { id: 4, name: 'Psychologist', number: 5, active: false },
   ];
   return (
     <Screen style={styles.container}>
@@ -86,18 +85,18 @@ export default function DoctorsListScreen({ active = false, navigation }) {
         <View style={styles.sortingDetails}>
           <TouchableOpacity style={styles.sortItem}>
             <Text style={styles.topRelated}>Top Rated </Text>
-            <Entypo name="chevron-small-down" size={24} color={colors.medium} />
+            <Entypo name='chevron-small-down' size={24} color={colors.medium} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.sortItem}>
             <MaterialCommunityIcons
-              name="sort-alphabetical-variant"
+              name='sort-alphabetical-variant'
               size={20}
               color={colors.medium}
             />
             <Text style={styles.topRelated}>Sort </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.sortItem}>
-            <Octicons name="settings" size={20} color={colors.medium} />
+            <Octicons name='settings' size={20} color={colors.medium} />
 
             <Text style={styles.topRelated}>Filter </Text>
           </TouchableOpacity>
@@ -105,7 +104,7 @@ export default function DoctorsListScreen({ active = false, navigation }) {
         <View style={styles.doctorsList}>
           {[1, 2, 3, 4, 5].map((item) => (
             <ListItem
-              onPress={() => navigation.navigate("Profile")}
+              onPress={() => navigation.navigate('Profile')}
               key={item}
             />
           ))}
@@ -117,10 +116,10 @@ export default function DoctorsListScreen({ active = false, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
   },
   header: {
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 10,
     marginBottom: 10,
     marginTop: 10,
@@ -128,24 +127,24 @@ const styles = StyleSheet.create({
   mainView: { flex: 1 },
   title: {
     ...style.text,
-    fontWeight: "900",
+    fontWeight: '900',
     fontSize: 40,
     color: colors.dark,
   },
 
   categories: {
     paddingVertical: 10,
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 10,
   },
   categoryItem: {
-    flexDirection: "row",
+    flexDirection: 'row',
     backgroundColor: colors.primary,
     paddingHorizontal: 15,
-    width: "auto",
+    width: 'auto',
     borderRadius: 30,
     paddingVertical: 6,
-    justifyContent: "center",
+    justifyContent: 'center',
     shadowColor: colors.primary,
     shadowOffset: {
       width: 0,
@@ -159,19 +158,19 @@ const styles = StyleSheet.create({
   categoryName: {
     ...style.text,
     color: colors.white,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   categoryNumber: {
     width: 22,
     height: 22,
     backgroundColor: colors.white,
     borderRadius: 11,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: 15,
   },
   number: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 12,
     color: colors.primary,
   },
@@ -189,37 +188,37 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     marginLeft: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   topDoctorImage: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   topDoctorDetails: {
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
   topDoctorRating: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 8,
   },
   doctorRating: {
     color: colors.medium,
   },
   stars: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 
   topDoctorName: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 5,
   },
   sortingDetails: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 20,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   topDoctorSubTitle: {
     ...style.text,
@@ -229,9 +228,9 @@ const styles = StyleSheet.create({
   },
 
   sortItem: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     backgroundColor: colors.white,
     ...style.boxShaddow,
     paddingVertical: 8,
@@ -241,8 +240,8 @@ const styles = StyleSheet.create({
   },
 
   topRelated: {
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     color: colors.medium,
     marginHorizontal: 5,
   },

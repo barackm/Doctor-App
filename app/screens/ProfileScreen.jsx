@@ -55,7 +55,7 @@ export default function ProfileScreen({ navigation }) {
               <Feather name='phone-call' size={20} color={colors.white} />
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Edit Profile')}>
             <LinearGradient
               colors={[colors.primary, colors.darkerPrimary]}
               style={styles.profileIcon}

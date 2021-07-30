@@ -1,14 +1,18 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, ScrollView } from 'react-native';
 import Screen from './Screen';
-import style from '../config/style';
 import colors from '../config/colors';
 import AppointmentItem from './common/AppointmentItem';
-
+import ItemSeparator from './common/ItemSeparator';
 export default function AppointmentsList() {
   return (
     <Screen style={styles.container}>
-      <AppointmentItem />
+      <FlatList
+        data={[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={() => <AppointmentItem />}
+        ItemSeparatorComponent={() => <ItemSeparator />}
+      />
     </Screen>
   );
 }
