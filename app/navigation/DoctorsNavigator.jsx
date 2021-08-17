@@ -6,12 +6,7 @@ import BookingCalenderScreen from '../screens/BookingCalenderScreen';
 
 const Stack = createStackNavigator();
 
-const DoctorsNavigator = ({ navigation, route }) => {
-  //   if (route.state && route.state.index > 0) {
-  //     navigation.setOptions({ tabBarVisible: false });
-  //   } else {
-  //     navigation.setOptions({ tabBarVisible: true });
-  //   }
+const DoctorsNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -22,7 +17,7 @@ const DoctorsNavigator = ({ navigation, route }) => {
       <Stack.Screen
         name='Doctor'
         component={DoctorProfileScreen}
-        options={{ headerShown: false, mode: 'modal' }}
+        options={{ headerShown: true, mode: 'modal' }}
       />
       <Stack.Screen name='Booking' component={BookingCalenderScreen} />
     </Stack.Navigator>

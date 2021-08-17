@@ -1,13 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Image,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
@@ -15,104 +15,97 @@ import Screen from '../components/Screen';
 import colors from '../config/colors';
 import style from '../config/style';
 import ListItem from '../components/ListItem';
+import TopDoctorsListItem from '../components/TopDoctorsListItem';
 
-function TopDoctorsListItem({ navigation }) {
-  return (
-    <TouchableOpacity
-      style={styles.topDoctorsContainer}
-      onPress={() => navigation.navigate('Doctor')}
-    >
-      <View style={styles.topDoctorImageContainer}>
-        <Image
-          style={styles.topDoctorImage}
-          source={{
-            uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-          }}
-        />
-      </View>
-      <View style={styles.topDoctorDetails}>
-        <Text style={styles.topDoctorName} numberOfLines={1}>
-          Dr. Nathan Fox
-        </Text>
-        <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
-          MBBS, FCP, MACP
-        </Text>
-        <View style={styles.topDoctorRating}>
-          <View style={styles.stars}>
+import { loadDoctorsAsync } from '../store/thunkCreators/doctorsThunk';
+
+class DoctorsListScreen extends React.Component {
+  componentDidMount() {
+    this.props.loadDoctors();
+  }
+
+  updateState = () => {
+    this.setState({ doctors: this.props.doctors });
+  };
+
+  render() {
+    const { loading, doctors } = this.props;
+    return (
+      <Screen style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Doctors</Text>
+          <TouchableOpacity style={styles.categoryItem}>
+            <Text style={styles.categoryName}>Categories</Text>
+            <View style={styles.categoryNumber}>
+              <Text style={styles.number}>5</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <ScrollView style={styles.mainView}>
+          <ScrollView
+            horizontal={true}
+            style={styles.categories}
+            showsHorizontalScrollIndicator={false}
+          >
+            {loading ? (
+              <Text>Loading</Text>
+            ) : (
+              doctors.map((item) => (
+                <TopDoctorsListItem
+                  navigation={this.props.navigation}
+                  key={item._id}
+                />
+              ))
+            )}
+          </ScrollView>
+          <View style={styles.sortingDetails}>
+            <TouchableOpacity style={styles.sortItem}>
+              <Text style={styles.topRelated}>Top Rated </Text>
+              <Entypo
+                name="chevron-small-down"
+                size={24}
+                color={colors.medium}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sortItem}>
+              <MaterialCommunityIcons
+                name="sort-alphabetical-variant"
+                size={20}
+                color={colors.medium}
+              />
+              <Text style={styles.topRelated}>Sort </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sortItem}>
+              <Octicons name="settings" size={20} color={colors.medium} />
+
+              <Text style={styles.topRelated}>Filter </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.doctorsList}>
             {[1, 2, 3, 4, 5].map((item) => (
-              <FontAwesome
+              <ListItem
+                onPress={() => this.props.navigation.navigate('Profile')}
                 key={item}
-                name='star'
-                size={15}
-                color={colors.gold}
               />
             ))}
           </View>
-          <Text style={styles.doctorRating}>(227)</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-}
-export default function DoctorsListScreen({ active = false, navigation }) {
-  const categories = [
-    { id: 1, name: 'Dentists', number: 20, active: true },
-    { id: 2, name: 'Cardiologist', number: 10, active: false },
-    { id: 3, name: 'Psychiator', number: 5, active: false },
-    { id: 4, name: 'Psychologist', number: 5, active: false },
-  ];
-  return (
-    <Screen style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Doctors</Text>
-        <TouchableOpacity style={styles.categoryItem}>
-          <Text style={styles.categoryName}>Categories</Text>
-          <View style={styles.categoryNumber}>
-            <Text style={styles.number}>5</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <ScrollView style={styles.mainView}>
-        <ScrollView
-          horizontal={true}
-          style={styles.categories}
-          showsHorizontalScrollIndicator={false}
-        >
-          {[1, 2, 3, 4, 5].map((item) => (
-            <TopDoctorsListItem navigation={navigation} key={item} />
-          ))}
         </ScrollView>
-        <View style={styles.sortingDetails}>
-          <TouchableOpacity style={styles.sortItem}>
-            <Text style={styles.topRelated}>Top Rated </Text>
-            <Entypo name='chevron-small-down' size={24} color={colors.medium} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.sortItem}>
-            <MaterialCommunityIcons
-              name='sort-alphabetical-variant'
-              size={20}
-              color={colors.medium}
-            />
-            <Text style={styles.topRelated}>Sort </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.sortItem}>
-            <Octicons name='settings' size={20} color={colors.medium} />
-
-            <Text style={styles.topRelated}>Filter </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.doctorsList}>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <ListItem
-              onPress={() => navigation.navigate('Profile')}
-              key={item}
-            />
-          ))}
-        </View>
-      </ScrollView>
-    </Screen>
-  );
+      </Screen>
+    );
+  }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    doctors: state.entities.doctors.list,
+    loading: state.entities.doctors.loading,
+  };
+};
+
+const mapDispatchToProps = {
+  loadDoctors: () => loadDoctorsAsync(),
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DoctorsListScreen);
 
 const styles = StyleSheet.create({
   container: {

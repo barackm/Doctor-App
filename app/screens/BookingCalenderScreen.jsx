@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,37 +7,37 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
-} from "react-native";
-import Screen from "../components/Screen";
-import { Calendar } from "react-native-calendario";
-import colors from "../config/colors";
-import style from "../config/style";
-import AppInput from "../components/forms/AppInput";
-import { FontAwesome } from "@expo/vector-icons";
+} from 'react-native';
+import Screen from '../components/Screen';
+import { Calendar } from 'react-native-calendario';
+import colors from '../config/colors';
+import style from '../config/style';
+import AppInput from '../components/forms/AppInput';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function BookingCalenderScreen() {
   const morningSlots = [
-    { id: 1, time: "10:10 am", taken: true, active: false },
-    { id: 2, time: "10:30 am", taken: false, active: false },
-    { id: 3, time: "10:50 am", taken: false, active: false },
-    { id: 4, time: "11:20 am", taken: false, active: false },
-    { id: 5, time: "11:40 am", taken: true, active: false },
+    { id: 1, time: '10:10 am', taken: true, active: false },
+    { id: 2, time: '10:30 am', taken: false, active: false },
+    { id: 3, time: '10:50 am', taken: false, active: false },
+    { id: 4, time: '11:20 am', taken: false, active: false },
+    { id: 5, time: '11:40 am', taken: true, active: false },
   ];
   const afternoonSlots = [
-    { id: 1, time: "02:00 pm", taken: true, active: false },
-    { id: 2, time: "02:20 pm", taken: false, active: true },
-    { id: 3, time: "02:40 pm", taken: false, active: false },
+    { id: 1, time: '02:00 pm', taken: true, active: false },
+    { id: 2, time: '02:20 pm', taken: false, active: true },
+    { id: 3, time: '02:40 pm', taken: false, active: false },
   ];
   const eveningSlots = [
-    { id: 1, time: "07:00 pm", taken: false, active: false },
-    { id: 2, time: "07:20 pm", taken: true, active: false },
-    { id: 3, time: "07:40 pm", taken: false, active: false },
-    { id: 4, time: "08:00 pm", taken: false, active: false },
-    { id: 5, time: "08:20 pm", taken: false, active: false },
+    { id: 1, time: '07:00 pm', taken: false, active: false },
+    { id: 2, time: '07:20 pm', taken: true, active: false },
+    { id: 3, time: '07:40 pm', taken: false, active: false },
+    { id: 4, time: '08:00 pm', taken: false, active: false },
+    { id: 5, time: '08:20 pm', taken: false, active: false },
   ];
 
   const renderBackgroundColor = (item, colors) => {
-    let color = "";
+    let color = '';
     if (item.active && !item.taken) {
       color = colors.primary;
     } else if (item.taken && !item.active) {
@@ -49,7 +49,7 @@ export default function BookingCalenderScreen() {
   };
 
   const renderColor = (item, colors) => {
-    let color = "";
+    let color = '';
     if (item.active && !item.taken) {
       color = colors.white;
     } else if (item.taken && !item.active) {
@@ -62,15 +62,18 @@ export default function BookingCalenderScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.safeView} behavior="padding">
-      <ScrollView style={styles.mainView} orientation="vertical">
+    <KeyboardAvoidingView
+      style={styles.safeView}
+      behavior='padding'
+      keyboardVerticalOffset={60}
+    >
+      <ScrollView style={styles.mainView} orientation='vertical'>
         <Screen style={styles.container}>
           <View style={styles.header}>
             <View style={styles.doctorImage}>
               <Image
                 source={{
-                  uri:
-                    "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                  uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
                 }}
                 style={styles.image}
               />
@@ -87,7 +90,7 @@ export default function BookingCalenderScreen() {
                   {[1, 2, 3, 4, 5].map((item) => (
                     <FontAwesome
                       key={item}
-                      name="star"
+                      name='star'
                       size={15}
                       color={colors.gold}
                     />
@@ -109,22 +112,22 @@ export default function BookingCalenderScreen() {
               theme={{
                 activeDayColor: {},
                 monthTitleTextStyle: {
-                  color: "#6d95da",
-                  fontWeight: "300",
+                  color: '#6d95da',
+                  fontWeight: '300',
                   fontSize: 16,
                 },
                 emptyMonthContainerStyle: {},
                 emptyMonthTextStyle: {
-                  fontWeight: "200",
+                  fontWeight: '200',
                 },
                 weekColumnsContainerStyle: {},
                 weekColumnStyle: {
                   paddingVertical: 5,
                 },
                 weekColumnTextStyle: {
-                  color: "#b6c1cd",
+                  color: '#b6c1cd',
                   fontSize: 14,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                 },
                 nonTouchableDayContainerStyle: {},
                 nonTouchableDayTextStyle: {},
@@ -132,8 +135,8 @@ export default function BookingCalenderScreen() {
                 endDateContainerStyle: {},
                 dayContainerStyle: {},
                 dayTextStyle: {
-                  color: "#2d4150",
-                  fontWeight: "500",
+                  color: '#2d4150',
+                  fontWeight: '500',
                   fontSize: 15,
                 },
                 dayOutOfRangeContainerStyle: {},
@@ -141,19 +144,19 @@ export default function BookingCalenderScreen() {
                 todayContainerStyle: {},
                 todayTextStyle: {
                   color: colors.primary,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   fontSize: 16,
                 },
                 activeDayContainerStyle: {
                   backgroundColor: colors.primary,
                 },
                 activeDayTextStyle: {
-                  color: "white",
+                  color: 'white',
                 },
                 nonTouchableLastMonthDayTextStyle: {},
               }}
               disableRange={true}
-              orientation="horizontal"
+              orientation='horizontal'
             />
           </View>
 
@@ -234,10 +237,10 @@ export default function BookingCalenderScreen() {
 
           <View style={styles.bookingInfoContainer}>
             <AppInput
-              placeholder="Description"
+              placeholder='Description'
               style={{ height: 100 }}
               multiline={true}
-              label="Desciption"
+              label='Desciption'
             />
           </View>
 
@@ -255,14 +258,14 @@ export default function BookingCalenderScreen() {
 const styles = StyleSheet.create({
   safeView: {
     flex: 1,
-    width: "100%",
+    width: '100%',
   },
   mainView: {
     flex: 1,
     backgroundColor: colors.light,
   },
   header: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 20,
     backgroundColor: colors.white,
     borderBottomColor: colors.light,
@@ -271,7 +274,7 @@ const styles = StyleSheet.create({
   },
   topDoctorName: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   topDoctorSubTitle: {
     ...style.text,
@@ -284,22 +287,22 @@ const styles = StyleSheet.create({
     ...style.text,
   },
   topDoctorRating: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   stars: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginRight: 10,
   },
   doctorImage: {
     width: 100,
     height: 100,
     borderRadius: 5,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
 
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   calendarContainer: {
     paddingHorizontal: 20,
@@ -312,32 +315,32 @@ const styles = StyleSheet.create({
 
   title: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.medium,
   },
   availableTime: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 10,
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
   },
   availableTimeItem: {
-    width: "30%",
+    width: '30%',
     paddingVertical: 10,
     borderRadius: 5,
     backgroundColor: colors.white,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     ...style.boxShaddow,
     marginBottom: 10,
     marginRight: 10,
   },
   timeText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   confirmation: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingBottom: 30,
     paddingHorizontal: 20,
   },
@@ -345,14 +348,14 @@ const styles = StyleSheet.create({
   submitBtn: {
     flex: 1,
     backgroundColor: colors.primary,
-    width: "100%",
+    width: '100%',
     paddingVertical: 16,
     borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   submitBtnText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     ...style.text,
     color: colors.white,
   },

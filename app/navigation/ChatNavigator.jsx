@@ -1,17 +1,16 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import ChatRoomScreen from "../screens/ChatRoomScreen";
-import ChatListScreen from "../screens/ChatListScreen";
+import React, { useContext } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import ChatRoomScreen from '../screens/ChatRoomScreen';
+import ChatListScreen from '../screens/ChatListScreen';
+// import TabBarContext from '../components/context/TabBarContext';
 const Stack = createStackNavigator();
 
-const ChatNavigator = ({ navigation, route }) => {
-  if (route.state && route.state.index > 0) {
-    navigation.setOptions({ tabBarVisible: false });
-  } else {
-    navigation.setOptions({ tabBarVisible: true });
-  }
+const ChatNavigator = () => {
+  // const tabBarContext = useContext(TabBarContext);
+  // tabBarContext.onChangeTab();
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{}}>
       <Stack.Screen
         name="Messages"
         component={ChatListScreen}

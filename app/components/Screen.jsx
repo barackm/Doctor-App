@@ -1,8 +1,9 @@
-import React from "react";
-import Constants from "expo-constants";
+import React from 'react';
+import Constants from 'expo-constants';
 
-import { StyleSheet, SafeAreaView, style, View } from "react-native";
-import colors from "../config/colors";
+import { StyleSheet, SafeAreaView, View } from 'react-native';
+import colors from '../config/colors';
+
 function Screen({ children, style }) {
   return (
     <SafeAreaView style={[styles.screen, style]}>
