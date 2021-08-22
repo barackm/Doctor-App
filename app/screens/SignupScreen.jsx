@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,22 +6,38 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-} from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { Fontisto } from "@expo/vector-icons";
-import colors from "../config/colors";
-import Input from "../components/forms/Input";
-import SubmitBtn from "../components/forms/SubmitBtn";
-import Screen from "../components/Screen";
-import style from "../config/style";
+} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
+import * as Yup from 'yup';
+
+import colors from '../config/colors';
+import Input from '../components/forms/Input';
+import SubmitBtn from '../components/forms/SubmitBtn';
+import Screen from '../components/Screen';
+import style from '../config/style';
+import AppForm from '../components/forms/AppForm';
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email().required('Email is required'),
+  password: Yup.string().required('Password is required'),
+  username: Yup.string().required('Username is required'),
+});
 
 export default function SignupScreen({ navigation }) {
+  const handleSubmit = (values) => {
+    loginUser({
+      email: values.email,
+      password: values.password,
+      username: values.username,
+    });
+  };
   return (
     <Screen style={styles.container}>
       <SafeAreaView style={styles.loginSubContainer}>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../../assets/logo3.png")}
+            source={require('../../assets/logo3.png')}
             style={styles.image}
           />
         </View>
@@ -29,23 +45,31 @@ export default function SignupScreen({ navigation }) {
           <Text style={styles.welcome}>Welcome Back</Text>
           <Text style={styles.account}>Login to your account</Text>
         </View>
-        <Input
-          placeholder="Username"
-          icon={<AntDesign name="user" size={30} color={colors.primary} />}
-          secureTextEntry={false}
-        />
-        <Input
-          placeholder="Email"
-          icon={<Fontisto name="email" size={30} color={colors.primary} />}
-          secureTextEntry={false}
-        />
-        <Input
-          placeholder="Password"
-          icon={<AntDesign name="lock1" size={30} color={colors.primary} />}
-          secureTextEntry={true}
-        />
-        <SubmitBtn text="Sign Up" />
-
+        <AppForm
+          initialValues={{ username: '', email: '', password: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          <Input
+            placeholder="Username"
+            icon={<AntDesign name="user" size={30} color={colors.primary} />}
+            secureTextEntry={false}
+            name="username"
+          />
+          <Input
+            placeholder="Email"
+            icon={<Fontisto name="email" size={30} color={colors.primary} />}
+            secureTextEntry={false}
+            name="email"
+          />
+          <Input
+            placeholder="Password"
+            icon={<AntDesign name="lock1" size={30} color={colors.primary} />}
+            secureTextEntry
+            name="password"
+          />
+          <SubmitBtn text="Sign Up" />
+        </AppForm>
         <View style={styles.myDoctor}>
           <View style={styles.leftLine} />
           <Text style={styles.myDoctorText}>MY DOCTOR</Text>
@@ -54,7 +78,7 @@ export default function SignupScreen({ navigation }) {
       </SafeAreaView>
       <View style={styles.createAccount}>
         <Text style={styles.missAccount}>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.signup}>Sign In</Text>
         </TouchableOpacity>
       </View>
@@ -65,33 +89,33 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     backgroundColor: colors.light,
-    alignItems: "center",
+    alignItems: 'center',
   },
 
   loginSubContainer: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     backgroundColor: colors.light,
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 30,
   },
   logoContainer: {
     width: 130,
     height: 120,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 40,
   },
 
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
 
   welcomeMessages: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 15,
   },
   welcome: {
@@ -106,10 +130,10 @@ const styles = StyleSheet.create({
 
   createAccount: {
     marginVertical: 30,
-    width: "100%",
-    justifyContent: "center",
-    alignContent: "center",
-    flexDirection: "row",
+    width: '100%',
+    justifyContent: 'center',
+    alignContent: 'center',
+    flexDirection: 'row',
   },
 
   missAccount: {
@@ -120,14 +144,14 @@ const styles = StyleSheet.create({
   signup: {
     ...style.text,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.primary,
   },
 
   myDoctor: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
   },
   leftLine: {
@@ -144,7 +168,7 @@ const styles = StyleSheet.create({
   },
   myDoctorText: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 14,
     marginHorizontal: 10,
     color: colors.primary,

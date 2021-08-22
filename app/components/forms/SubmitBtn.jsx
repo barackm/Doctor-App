@@ -1,11 +1,13 @@
+import { useFormikContext } from 'formik';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import colors from '../../config/colors';
 import style from '../../config/style';
 
 export default function SubmitBtn({ text, onPress }) {
+  const { handleSubmit } = useFormikContext();
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={handleSubmit}>
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );

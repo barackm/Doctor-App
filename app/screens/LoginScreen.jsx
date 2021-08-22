@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,24 +7,28 @@ import {
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
-  Alert,
 } from 'react-native';
+
+import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
+import * as Yup from 'yup';
+
 import colors from '../config/colors';
 import Input from '../components/forms/Input';
 import SubmitBtn from '../components/forms/SubmitBtn';
 import Screen from '../components/Screen';
 import style from '../config/style';
-import { connect } from 'react-redux';
 import { loginUserAsync } from '../store/thunkCreators/authThunk';
+import AppForm from '../components/forms/AppForm';
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email().required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
 
 const LoginScreen = ({ navigation, loginUser }) => {
-  const [userName, setUserName] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const handleSubmit = () => {
-    if (userName.trim().length === 0 || password.trim().length === 0)
-      return Alert.alert('Username of password should not be empty');
-    loginUser({ email: userName, password });
+  const handleSubmit = (values) => {
+    loginUser({ email: values.email, password: values.password });
   };
   return (
     <KeyboardAvoidingView style={styles.safeView}>
@@ -40,20 +44,25 @@ const LoginScreen = ({ navigation, loginUser }) => {
             <Text style={styles.welcome}>Welcome Back</Text>
             <Text style={styles.account}>Login to your account</Text>
           </View>
-          <Input
-            placeholder="Username"
-            icon={<AntDesign name="user" size={30} color={colors.primary} />}
-            secureTextEntry={false}
-            onChangeText={setUserName}
-          />
-          <Input
-            placeholder="Password"
-            icon={<AntDesign name="lock1" size={24} color={colors.primary} />}
-            secureTextEntry={true}
-            onChangeText={setPassword}
-          />
-          <SubmitBtn text="Login" onPress={handleSubmit} />
-
+          <AppForm
+            initialValues={{ email: '', password: '' }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            <Input
+              placeholder="Username or Email"
+              icon={<AntDesign name="user" size={30} color={colors.primary} />}
+              secureTextEntry={false}
+              name="email"
+            />
+            <Input
+              placeholder="Password"
+              icon={<AntDesign name="lock1" size={24} color={colors.primary} />}
+              secureTextEntry={true}
+              name="password"
+            />
+            <SubmitBtn text="Login" />
+          </AppForm>
           <View style={styles.myDoctor}>
             <View style={styles.leftLine} />
             <Text style={styles.myDoctorText}>MY DOCTOR</Text>

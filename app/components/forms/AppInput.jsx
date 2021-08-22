@@ -1,3 +1,4 @@
+import { useFormikContext } from 'formik';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import colors from '../../config/colors';
@@ -8,8 +9,9 @@ export default function AppInput({
   style = {},
   multiline = false,
   label,
-  onChangeText,
+  name,
 }) {
+  const { handleChange, values } = useFormikContext();
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -17,8 +19,9 @@ export default function AppInput({
         <TextInput
           style={[styles.input, { ...style }]}
           placeholder={placeholder}
+          value={values[name]}
           multiline={multiline}
-          onChangeText={onChangeText}
+          onChangeText={handleChange(name)}
         />
       </View>
     </View>

@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 import {
   apiCallBegan,
   loginUserFailure,
@@ -6,7 +6,7 @@ import {
   logoutUserSuccess,
 } from '../actions/actionCreators';
 import axios from 'axios';
-import storage from '../../utils/storage';
+import storage from '../../auth/storage';
 
 const apiEndPoint = 'https://aqueous-gorge-50977.herokuapp.com/api';
 
@@ -18,7 +18,7 @@ export const loginUserAsync = (user) => async (dispatch) => {
     const authToken = response.headers['x-auth-token'];
     await storage.setAuthToken(authToken);
   } catch (error) {
-    console.log('failed', error);
+    Alert.alert(error.message);
     dispatch(loginUserFailure(error.message));
   }
 };

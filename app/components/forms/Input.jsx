@@ -1,23 +1,24 @@
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { useFormikContext } from 'formik';
+import { StyleSheet, TextInput, View, Text } from 'react-native';
 import colors from '../../config/colors';
 import style from '../../config/style';
-export default function Input({
-  placeholder,
-  icon,
-  secureTextEntry,
-  onChangeText,
-}) {
+export default function Input({ placeholder, icon, secureTextEntry, name }) {
+  const { handleChange, values, errors, touched } = useFormikContext();
   return (
-    <View style={styles.container}>
-      <View style={styles.iconContainer}>{icon}</View>
-      <TextInput
-        placeholder={placeholder}
-        secureTextEntry={secureTextEntry}
-        style={styles.input}
-        onChangeText={onChangeText}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <View style={styles.iconContainer}>{icon}</View>
+        <TextInput
+          placeholder={placeholder}
+          secureTextEntry={secureTextEntry}
+          style={styles.input}
+          value={values[name]}
+          onChangeText={handleChange(name)}
+        />
+      </View>
+      {touched[name] && <Text style={styles.inputError}>{errors[name]}</Text>}
+    </>
   );
 }
 
@@ -65,5 +66,8 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: 75,
     ...style.text,
+  },
+  inputError: {
+    color: colors.danger,
   },
 });

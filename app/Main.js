@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import AppNavigator from './navigation/AppNavigator';
 import AuthNavigator from './navigation/AuthNavigator';
-import storage from './utils/storage';
+import storage from './auth/storage';
 
 const Main = ({ isUserAuthenticated }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
