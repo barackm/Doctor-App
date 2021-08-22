@@ -8,12 +8,13 @@ import {
   KeyboardAvoidingView,
   Image,
   Alert,
+  FlatList,
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { Calendar } from 'react-native-calendario';
 
 import Screen from '../components/Screen';
-import { Calendar } from 'react-native-calendario';
 import colors from '../config/colors';
 import style from '../config/style';
 import AppInput from '../components/forms/AppInput';
@@ -79,6 +80,7 @@ const BookingCalenderScreen = ({ route, navigation, doctors, loading }) => {
   };
 
   const handleSelectSlot = (slot) => {
+    if (slot.taken) return Alert.alert('This time is already taken');
     if (!selectedDate) return Alert.alert('Please select first a date');
     if (selectedSlot && selectedSlot.id !== slot.id) return;
     setSlots(
@@ -127,175 +129,194 @@ const BookingCalenderScreen = ({ route, navigation, doctors, loading }) => {
       {loading || !name ? (
         <Text style={styles.loadingText}>Loading...</Text>
       ) : (
-        <ScrollView style={styles.mainView} orientation="vertical">
-          <Screen style={styles.container}>
-            <View style={styles.header}>
-              <View style={styles.doctorImage}>
-                <Image
-                  source={{
-                    uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                  }}
-                  style={styles.image}
-                />
-              </View>
-              <View style={styles.topDoctorDetails}>
-                <Text style={styles.topDoctorName} numberOfLines={1}>
-                  {capitalize(name)} {capitalize(lastName)}
-                </Text>
-                <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
-                  MBBS, FCP, MACP
-                </Text>
-                <View style={styles.topDoctorRating}>
-                  <View style={styles.stars}>
-                    {[1, 2, 3, 4, 5].map((item) => (
-                      <FontAwesome
-                        key={item}
-                        name="star"
-                        size={15}
-                        color={colors.gold}
-                      />
-                    ))}
+        <FlatList
+          data={[]}
+          ListEmptyComponent={null}
+          keyExtractor={() => 'dummy'}
+          renderItem={null}
+          style={styles.mainView}
+          ListHeaderComponent={() => (
+            <React.Fragment>
+              <Screen style={styles.container}>
+                <View style={styles.header}>
+                  <View style={styles.doctorImage}>
+                    <Image
+                      source={{
+                        uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                      }}
+                      style={styles.image}
+                    />
                   </View>
-                  <Text style={styles.doctorRating}>(227)</Text>
+                  <View style={styles.topDoctorDetails}>
+                    <Text style={styles.topDoctorName} numberOfLines={1}>
+                      {capitalize(name)} {capitalize(lastName)}
+                    </Text>
+                    <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
+                      MBBS, FCP, MACP
+                    </Text>
+                    <View style={styles.topDoctorRating}>
+                      <View style={styles.stars}>
+                        {[1, 2, 3, 4, 5].map((item) => (
+                          <FontAwesome
+                            key={item}
+                            name="star"
+                            size={15}
+                            color={colors.gold}
+                          />
+                        ))}
+                      </View>
+                      <Text style={styles.doctorRating}>(227)</Text>
+                    </View>
+                    <Text style={styles.headerSubTitle}>
+                      Book an Appointment
+                    </Text>
+                  </View>
                 </View>
-                <Text style={styles.headerSubTitle}>Book an Appointment</Text>
-              </View>
-            </View>
-            <View style={styles.calendarContainer}>
-              <Calendar
-                scrollEnabled={false}
-                onChange={(range) => handleSelectDates(range)}
-                startDate={startDate || new Date(2018, 3, 30)}
-                numberOfMonths={1}
-                theme={{
-                  activeDayColor: {},
-                  monthTitleTextStyle: {
-                    color: '#6d95da',
-                    fontWeight: '300',
-                    fontSize: 16,
-                  },
-                  emptyMonthContainerStyle: {},
-                  emptyMonthTextStyle: {
-                    fontWeight: '200',
-                  },
-                  weekColumnsContainerStyle: {},
-                  weekColumnStyle: {
-                    paddingVertical: 5,
-                  },
-                  weekColumnTextStyle: {
-                    color: '#b6c1cd',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                  },
-                  nonTouchableDayContainerStyle: {},
-                  nonTouchableDayTextStyle: {},
-                  startDateContainerStyle: {},
-                  endDateContainerStyle: {},
-                  dayContainerStyle: {},
-                  dayTextStyle: {
-                    color: '#2d4150',
-                    fontWeight: '500',
-                    fontSize: 15,
-                  },
-                  dayOutOfRangeContainerStyle: {},
-                  dayOutOfRangeTextStyle: {},
-                  todayContainerStyle: {},
-                  todayTextStyle: {
-                    color: colors.primary,
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                  },
-                  activeDayContainerStyle: {
-                    backgroundColor: colors.primary,
-                  },
-                  activeDayTextStyle: {
-                    color: 'white',
-                  },
-                  nonTouchableLastMonthDayTextStyle: {},
-                }}
-                disableRange={true}
-                orientation="horizontal"
-              />
-            </View>
-
-            <View style={styles.timeContainer}>
-              <View style={styles.timeItem}>
-                <Text style={styles.title}>Morning Slots</Text>
-
-                <View style={styles.availableTime}>
-                  {getMorningSlots(slots).map((item) => (
-                    <TouchableOpacity
-                      key={item.id}
-                      onPress={() => handleSelectSlot(item)}
-                      style={[
-                        styles.availableTimeItem,
-                        {
-                          backgroundColor: renderBackgroundColor(item, colors),
-                        },
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.timeText,
-                          { color: renderColor(item, colors) },
-                        ]}
-                      >
-                        {item.time}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
+                <View style={styles.calendarContainer}>
+                  <Calendar
+                    scrollEnabled={false}
+                    onChange={(range) => handleSelectDates(range)}
+                    startDate={startDate || new Date(2018, 3, 30)}
+                    numberOfMonths={1}
+                    theme={{
+                      activeDayColor: {},
+                      monthTitleTextStyle: {
+                        color: '#6d95da',
+                        fontWeight: '300',
+                        fontSize: 16,
+                      },
+                      emptyMonthContainerStyle: {},
+                      emptyMonthTextStyle: {
+                        fontWeight: '200',
+                      },
+                      weekColumnsContainerStyle: {},
+                      weekColumnStyle: {
+                        paddingVertical: 5,
+                      },
+                      weekColumnTextStyle: {
+                        color: '#b6c1cd',
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                      },
+                      nonTouchableDayContainerStyle: {},
+                      nonTouchableDayTextStyle: {},
+                      startDateContainerStyle: {},
+                      endDateContainerStyle: {},
+                      dayContainerStyle: {},
+                      dayTextStyle: {
+                        color: '#2d4150',
+                        fontWeight: '500',
+                        fontSize: 15,
+                      },
+                      dayOutOfRangeContainerStyle: {},
+                      dayOutOfRangeTextStyle: {},
+                      todayContainerStyle: {},
+                      todayTextStyle: {
+                        color: colors.primary,
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                      },
+                      activeDayContainerStyle: {
+                        backgroundColor: colors.primary,
+                      },
+                      activeDayTextStyle: {
+                        color: 'white',
+                      },
+                      nonTouchableLastMonthDayTextStyle: {},
+                    }}
+                    disableRange={true}
+                    orientation="horizontal"
+                  />
                 </View>
-              </View>
 
-              <View style={styles.timeItem}>
-                <Text style={styles.title}>Afternoon Slots</Text>
+                <View style={styles.timeContainer}>
+                  <View style={styles.timeItem}>
+                    <Text style={styles.title}>Morning Slots</Text>
 
-                <View style={styles.availableTime}>
-                  {getAfternoonSlots(slots).map((item) => (
-                    <TouchableOpacity
-                      key={item.id}
-                      onPress={() => handleSelectSlot(item)}
-                      style={[
-                        styles.availableTimeItem,
-                        {
-                          backgroundColor: renderBackgroundColor(item, colors),
-                        },
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.timeText,
-                          { color: renderColor(item, colors) },
-                        ]}
-                      >
-                        {item.time}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
+                    <View style={styles.availableTime}>
+                      {getMorningSlots(slots).map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          onPress={() => handleSelectSlot(item)}
+                          style={[
+                            styles.availableTimeItem,
+                            {
+                              backgroundColor: renderBackgroundColor(
+                                item,
+                                colors,
+                              ),
+                            },
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              styles.timeText,
+                              { color: renderColor(item, colors) },
+                            ]}
+                          >
+                            {item.time}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+
+                  <View style={styles.timeItem}>
+                    <Text style={styles.title}>Afternoon Slots</Text>
+
+                    <View style={styles.availableTime}>
+                      {getAfternoonSlots(slots).map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          onPress={() => handleSelectSlot(item)}
+                          style={[
+                            styles.availableTimeItem,
+                            {
+                              backgroundColor: renderBackgroundColor(
+                                item,
+                                colors,
+                              ),
+                            },
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              styles.timeText,
+                              { color: renderColor(item, colors) },
+                            ]}
+                          >
+                            {item.time}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
 
-            <View style={styles.bookingInfoContainer}>
-              <AppInput
-                placeholder="Description"
-                style={{ height: 100 }}
-                multiline={true}
-                label="Description"
-                onChangeText={handleChange}
-              />
-            </View>
+                <View style={styles.bookingInfoContainer}>
+                  <AppInput
+                    placeholder="Description"
+                    style={{ height: 100 }}
+                    multiline={true}
+                    label="Description"
+                    onChangeText={handleChange}
+                  />
+                </View>
 
-            <View style={styles.confirmation}>
-              <TouchableOpacity
-                style={styles.submitBtn}
-                onPress={handleSubmitAppointment}
-              >
-                <Text style={styles.submitBtnText}>Confirm Appointment</Text>
-              </TouchableOpacity>
-            </View>
-          </Screen>
-        </ScrollView>
+                <View style={styles.confirmation}>
+                  <TouchableOpacity
+                    style={styles.submitBtn}
+                    onPress={handleSubmitAppointment}
+                  >
+                    <Text style={styles.submitBtnText}>
+                      Confirm Appointment
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </Screen>
+            </React.Fragment>
+          )}
+        />
       )}
     </KeyboardAvoidingView>
   );

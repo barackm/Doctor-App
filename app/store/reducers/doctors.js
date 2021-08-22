@@ -2,6 +2,7 @@ import * as actions from '../actions/actionCreators';
 import {
   DOCTORS_LOADED_SUCCESS,
   DOCTORS_LOADED_ERROR,
+  API_CALL_BEGAN,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -13,7 +14,7 @@ const initialState = {
 
 const doctors = (state = initialState, action) => {
   switch (action.type) {
-    case actions.apiCallBegan:
+    case API_CALL_BEGAN:
       return {
         ...state,
         loading: true,

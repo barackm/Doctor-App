@@ -16,7 +16,8 @@ import capitalize from '../utils/capitalize';
 
 export default function DoctorProfileScreen(props) {
   const { navigation, route } = props;
-  const { _id, name, lastName } = route.params;
+  const { _id, name, lastName, phoneNumber } = route.params;
+  console.log(route.params);
 
   return (
     <ScrollView style={styles.mainView}>
@@ -157,7 +158,7 @@ export default function DoctorProfileScreen(props) {
             </View>
             <View style={styles.educationErea}>
               <Text style={styles.educationTitle}>CONTACTS</Text>
-              <Text style={styles.educationDetail}>+250 780 083 122</Text>
+              <Text style={styles.educationDetail}>{phoneNumber}</Text>
               <Text style={styles.educationDetail}>
                 Email: nathan@gmail.com
               </Text>

@@ -41,56 +41,59 @@ class DoctorsListScreen extends React.Component {
             </View>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.mainView}>
-          <ScrollView
-            horizontal={true}
-            style={styles.categories}
-            showsHorizontalScrollIndicator={false}
-          >
-            {loading ? (
-              <Text>Loading</Text>
-            ) : (
-              doctors.map((doctor) => (
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          <ScrollView style={styles.mainView}>
+            <ScrollView
+              horizontal={true}
+              style={styles.categories}
+              showsHorizontalScrollIndicator={false}
+            >
+              {doctors.map((doctor) => (
                 <TopDoctorsListItem
                   navigation={this.props.navigation}
                   key={doctor._id}
                   doctor={doctor}
                 />
-              ))
-            )}
-          </ScrollView>
-          <View style={styles.sortingDetails}>
-            <TouchableOpacity style={styles.sortItem}>
-              <Text style={styles.topRelated}>Top Rated </Text>
-              <Entypo
-                name="chevron-small-down"
-                size={24}
-                color={colors.medium}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sortItem}>
-              <MaterialCommunityIcons
-                name="sort-alphabetical-variant"
-                size={20}
-                color={colors.medium}
-              />
-              <Text style={styles.topRelated}>Sort </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sortItem}>
-              <Octicons name="settings" size={20} color={colors.medium} />
+              ))}
+            </ScrollView>
+            <View style={styles.sortingDetails}>
+              <TouchableOpacity style={styles.sortItem}>
+                <Text style={styles.topRelated}>Top Rated </Text>
+                <Entypo
+                  name="chevron-small-down"
+                  size={24}
+                  color={colors.medium}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.sortItem}>
+                <MaterialCommunityIcons
+                  name="sort-alphabetical-variant"
+                  size={20}
+                  color={colors.medium}
+                />
+                <Text style={styles.topRelated}>Sort </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.sortItem}>
+                <Octicons name="settings" size={20} color={colors.medium} />
 
-              <Text style={styles.topRelated}>Filter </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.doctorsList}>
-            {[1, 2, 3, 4, 5].map((item) => (
-              <ListItem
-                onPress={() => this.props.navigation.navigate('Profile')}
-                key={item}
-              />
-            ))}
-          </View>
-        </ScrollView>
+                <Text style={styles.topRelated}>Filter </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.doctorsList}>
+              {doctors.map((doctor) => (
+                <ListItem
+                  onPress={() =>
+                    this.props.navigation.navigate('Doctor', doctor)
+                  }
+                  key={doctor._id}
+                  doctor={doctor}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        )}
       </Screen>
     );
   }
