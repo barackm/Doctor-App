@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../config/colors';
@@ -14,10 +15,19 @@ import Input from '../components/forms/Input';
 import SubmitBtn from '../components/forms/SubmitBtn';
 import Screen from '../components/Screen';
 import style from '../config/style';
+import { connect } from 'react-redux';
+import { loginUserAsync } from '../store/thunkCreators/authThunk';
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation, loginUser }) => {
+  const [userName, setUserName] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const handleSubmit = () => {
+    if (userName.trim().length === 0 || password.trim().length === 0)
+      return Alert.alert('Username of password should not be empty');
+    loginUser({ email: userName, password });
+  };
   return (
-    <KeyboardAvoidingView style={styles.safeView} behavior='padding'>
+    <KeyboardAvoidingView style={styles.safeView}>
       <Screen style={styles.container}>
         <SafeAreaView style={styles.loginSubContainer}>
           <View style={styles.logoContainer}>
@@ -31,16 +41,18 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.account}>Login to your account</Text>
           </View>
           <Input
-            placeholder='Username'
-            icon={<AntDesign name='user' size={30} color={colors.primary} />}
+            placeholder="Username"
+            icon={<AntDesign name="user" size={30} color={colors.primary} />}
             secureTextEntry={false}
+            onChangeText={setUserName}
           />
           <Input
-            placeholder='Password'
-            icon={<AntDesign name='lock1' size={24} color={colors.primary} />}
+            placeholder="Password"
+            icon={<AntDesign name="lock1" size={24} color={colors.primary} />}
             secureTextEntry={true}
+            onChangeText={setPassword}
           />
-          <SubmitBtn text='Login' />
+          <SubmitBtn text="Login" onPress={handleSubmit} />
 
           <View style={styles.myDoctor}>
             <View style={styles.leftLine} />
@@ -57,7 +69,7 @@ export default function LoginScreen({ navigation }) {
       </Screen>
     </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   safeView: {
@@ -151,3 +163,9 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
 });
+
+const mapDispatchToProps = {
+  loginUser: (user) => loginUserAsync(user),
+};
+
+export default connect(null, mapDispatchToProps)(LoginScreen);

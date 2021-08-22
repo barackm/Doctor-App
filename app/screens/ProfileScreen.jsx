@@ -15,11 +15,14 @@ import {
   FontAwesome,
   Fontisto,
   Octicons,
+  AntDesign,
 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import MenuItem from '../components/common/MenuItem';
+import { connect } from 'react-redux';
+import { logoutUser } from '../store/thunkCreators/authThunk';
 
-export default function ProfileScreen({ navigation }) {
+const ProfileScreen = ({ navigation, logoutUser }) => {
   return (
     <ScrollView style={styles.mainView}>
       <View style={styles.header}>
@@ -41,7 +44,7 @@ export default function ProfileScreen({ navigation }) {
               style={styles.profileIcon}
             >
               <MaterialCommunityIcons
-                name='email-outline'
+                name="email-outline"
                 size={25}
                 color={colors.white}
               />
@@ -52,7 +55,7 @@ export default function ProfileScreen({ navigation }) {
               colors={[colors.primary, colors.darkerPrimary]}
               style={styles.profileIcon}
             >
-              <Feather name='phone-call' size={20} color={colors.white} />
+              <Feather name="phone-call" size={20} color={colors.white} />
             </LinearGradient>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Edit Profile')}>
@@ -61,7 +64,7 @@ export default function ProfileScreen({ navigation }) {
               style={styles.profileIcon}
             >
               <MaterialCommunityIcons
-                name='pencil-outline'
+                name="pencil-outline"
                 size={25}
                 color={colors.white}
               />
@@ -72,28 +75,33 @@ export default function ProfileScreen({ navigation }) {
       <View style={styles.content}>
         <MenuItem
           item={{ name: 'My Appointments' }}
-          icon={<FontAwesome name='calendar' size={20} color={colors.white} />}
+          icon={<FontAwesome name="calendar" size={20} color={colors.white} />}
           onPress={() => navigation.navigate('Appointments')}
         />
         <MenuItem
           item={{ name: 'Tests history' }}
-          icon={<Fontisto name='test-tube' size={20} color={colors.white} />}
+          icon={<Fontisto name="test-tube" size={20} color={colors.white} />}
           onPress={() => navigation.navigate('Tests History')}
         />
         <MenuItem
           item={{ name: 'Payments' }}
-          icon={<FontAwesome name='money' size={20} color={colors.white} />}
+          icon={<FontAwesome name="money" size={20} color={colors.white} />}
           onPress={() => navigation.navigate('Payments History')}
         />
         <MenuItem
           item={{ name: 'Settings' }}
-          icon={<Octicons name='settings' size={20} color={colors.white} />}
+          icon={<Octicons name="settings" size={20} color={colors.white} />}
           onPress={() => navigation.navigate('Settings')}
+        />
+        <MenuItem
+          item={{ name: 'Logout' }}
+          icon={<AntDesign name="logout" size={20} color={colors.white} />}
+          onPress={logoutUser}
         />
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   mainView: {
@@ -152,7 +160,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: 20,
   },
-
   profileIcon: {
     width: 40,
     height: 40,
@@ -163,3 +170,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
 });
+
+const mapDispatchToProps = {
+  logoutUser: () => logoutUser(),
+};
+
+export default connect(null, mapDispatchToProps)(ProfileScreen);

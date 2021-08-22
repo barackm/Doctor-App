@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import colors from "../../config/colors";
-import style from "../../config/style";
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import colors from '../../config/colors';
+import style from '../../config/style';
 
-export default function SubmitBtn({ text }) {
+export default function SubmitBtn({ text, onPress }) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
@@ -13,11 +13,11 @@ export default function SubmitBtn({ text }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "50%",
+    width: '50%',
     height: 50,
     borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: colors.primary,
     marginVertical: 10,
     shadowColor: colors.primary,
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     ...style.text,
     color: colors.white,
     fontSize: 16,
-    textTransform: "uppercase",
-    fontWeight: "bold",
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
   },
 });
 // rnfs

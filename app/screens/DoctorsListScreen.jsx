@@ -30,6 +30,7 @@ class DoctorsListScreen extends React.Component {
 
   render() {
     const { loading, doctors } = this.props;
+    console.log(loading);
     return (
       <Screen style={styles.container}>
         <View style={styles.header}>

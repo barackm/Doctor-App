@@ -1,17 +1,18 @@
 import {
-  DOCTORS_LOADED_SUCCESS,
-  DOCTORS_LOADED_ERROR,
   API_CALL_BEGAN,
+  LOGIN_USER_ERROR,
+  LOGIN_USER_SUCCESS,
+  LOGOUT_USER_SUCCESS,
 } from '../actions/actionTypes';
 
 const initialState = {
   loading: false,
-  list: [],
   error: null,
-  lastFech: null,
+  currentUser: null,
+  isAuthenticated: false,
 };
 
-const doctors = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
   switch (action.type) {
     case API_CALL_BEGAN:
       return {
@@ -19,22 +20,29 @@ const doctors = (state = initialState, action) => {
         loading: true,
         error: null,
       };
-    case DOCTORS_LOADED_SUCCESS:
+    case LOGIN_USER_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: action.payload,
         error: null,
+        currentUser: action.payload,
+        isAuthenticated: true,
       };
-    case DOCTORS_LOADED_ERROR:
+    case LOGIN_USER_ERROR:
       return {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case LOGOUT_USER_SUCCESS:
+      return {
+        ...state,
+        currentUser: null,
+        isAuthenticated: false,
       };
     default:
       return state;
   }
 };
 
-export default doctors;
+export default auth;
