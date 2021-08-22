@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,34 +7,42 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
+  Alert,
 } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+
 import Screen from '../components/Screen';
 import { Calendar } from 'react-native-calendario';
 import colors from '../config/colors';
 import style from '../config/style';
 import AppInput from '../components/forms/AppInput';
-import { FontAwesome } from '@expo/vector-icons';
+import capitalize from '../utils/capitalize';
 
-export default function BookingCalenderScreen() {
-  const morningSlots = [
-    { id: 1, time: '10:10 am', taken: true, active: false },
-    { id: 2, time: '10:30 am', taken: false, active: false },
-    { id: 3, time: '10:50 am', taken: false, active: false },
-    { id: 4, time: '11:20 am', taken: false, active: false },
-    { id: 5, time: '11:40 am', taken: true, active: false },
-  ];
-  const afternoonSlots = [
-    { id: 1, time: '02:00 pm', taken: true, active: false },
-    { id: 2, time: '02:20 pm', taken: false, active: true },
-    { id: 3, time: '02:40 pm', taken: false, active: false },
-  ];
-  const eveningSlots = [
-    { id: 1, time: '07:00 pm', taken: false, active: false },
-    { id: 2, time: '07:20 pm', taken: true, active: false },
-    { id: 3, time: '07:40 pm', taken: false, active: false },
-    { id: 4, time: '08:00 pm', taken: false, active: false },
-    { id: 5, time: '08:20 pm', taken: false, active: false },
-  ];
+const BookingCalenderScreen = ({ route, navigation, doctors, loading }) => {
+  const { params } = route;
+  const [doctor, setDoctor] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [appointmentDescription, setAppointmentDescription] = useState('');
+
+  const [slots, setSlots] = useState([
+    { id: 1, time: '09:00 am', taken: false, active: false },
+    { id: 2, time: '10:00 am', taken: false, active: false },
+    { id: 3, time: '11:00 am', taken: false, active: false },
+    { id: 4, time: '12:00 am', taken: false, active: false },
+    { id: 5, time: '02:00 pm', taken: false, active: false },
+    { id: 6, time: '03:00 pm', taken: false, active: false },
+    { id: 7, time: '04:20 pm', taken: false, active: false },
+    { id: 8, time: '07:40 pm', taken: false, active: false },
+  ]);
+
+  useEffect(() => {
+    if (!params) navigation.navigate('Doctors');
+    const d = doctors.find((d) => d.id === params.doctorId);
+    if (!d) navigation.navigate('Doctors');
+    setDoctor(d);
+  }, []);
 
   const renderBackgroundColor = (item, colors) => {
     let color = '';
@@ -61,199 +69,246 @@ export default function BookingCalenderScreen() {
     return color;
   };
 
+  const handleSelectDates = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleChange = (description) => {
+    setAppointmentDescription(description);
+    console.log(description);
+  };
+
+  const handleSelectSlot = (slot) => {
+    if (!selectedDate) return Alert.alert('Please select first a date');
+    if (selectedSlot && selectedSlot.id !== slot.id) return;
+    setSlots(
+      slots.map((s) => {
+        if (s.id === slot.id) {
+          if (slot.active) {
+            s.active = false;
+            setSelectedSlot(null);
+          } else {
+            s.active = true;
+            setSelectedSlot(s);
+          }
+        }
+        return s;
+      }),
+    );
+  };
+
+  const getMorningSlots = (slots) => {
+    return slots.filter((slot) => slot.time.includes('am'));
+  };
+
+  const getAfternoonSlots = (slots) => {
+    return slots.filter((slot) => slot.time.includes('pm'));
+  };
+  const handleSubmitAppointment = () => {
+    if (!selectedDate) return Alert.alert('Please select first a date');
+    if (!selectedSlot) return Alert.alert('Please select first a slot');
+    if (appointmentDescription.trim().length < 10)
+      return Alert.alert('Please enter at least 10 characters for Description');
+    console.log(
+      selectedDate.startDate,
+      selectedSlot.time,
+      appointmentDescription,
+    );
+  };
+
+  const { name, lastName } = doctor || {};
+  const { startDate } = selectedDate || {};
   return (
     <KeyboardAvoidingView
       style={styles.safeView}
-      behavior='padding'
+      behavior="padding"
       keyboardVerticalOffset={60}
     >
-      <ScrollView style={styles.mainView} orientation='vertical'>
-        <Screen style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.doctorImage}>
-              <Image
-                source={{
-                  uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      {loading || !name ? (
+        <Text style={styles.loadingText}>Loading...</Text>
+      ) : (
+        <ScrollView style={styles.mainView} orientation="vertical">
+          <Screen style={styles.container}>
+            <View style={styles.header}>
+              <View style={styles.doctorImage}>
+                <Image
+                  source={{
+                    uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                  }}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.topDoctorDetails}>
+                <Text style={styles.topDoctorName} numberOfLines={1}>
+                  {capitalize(name)} {capitalize(lastName)}
+                </Text>
+                <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
+                  MBBS, FCP, MACP
+                </Text>
+                <View style={styles.topDoctorRating}>
+                  <View style={styles.stars}>
+                    {[1, 2, 3, 4, 5].map((item) => (
+                      <FontAwesome
+                        key={item}
+                        name="star"
+                        size={15}
+                        color={colors.gold}
+                      />
+                    ))}
+                  </View>
+                  <Text style={styles.doctorRating}>(227)</Text>
+                </View>
+                <Text style={styles.headerSubTitle}>Book an Appointment</Text>
+              </View>
+            </View>
+            <View style={styles.calendarContainer}>
+              <Calendar
+                scrollEnabled={false}
+                onChange={(range) => handleSelectDates(range)}
+                startDate={startDate || new Date(2018, 3, 30)}
+                numberOfMonths={1}
+                theme={{
+                  activeDayColor: {},
+                  monthTitleTextStyle: {
+                    color: '#6d95da',
+                    fontWeight: '300',
+                    fontSize: 16,
+                  },
+                  emptyMonthContainerStyle: {},
+                  emptyMonthTextStyle: {
+                    fontWeight: '200',
+                  },
+                  weekColumnsContainerStyle: {},
+                  weekColumnStyle: {
+                    paddingVertical: 5,
+                  },
+                  weekColumnTextStyle: {
+                    color: '#b6c1cd',
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                  },
+                  nonTouchableDayContainerStyle: {},
+                  nonTouchableDayTextStyle: {},
+                  startDateContainerStyle: {},
+                  endDateContainerStyle: {},
+                  dayContainerStyle: {},
+                  dayTextStyle: {
+                    color: '#2d4150',
+                    fontWeight: '500',
+                    fontSize: 15,
+                  },
+                  dayOutOfRangeContainerStyle: {},
+                  dayOutOfRangeTextStyle: {},
+                  todayContainerStyle: {},
+                  todayTextStyle: {
+                    color: colors.primary,
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                  },
+                  activeDayContainerStyle: {
+                    backgroundColor: colors.primary,
+                  },
+                  activeDayTextStyle: {
+                    color: 'white',
+                  },
+                  nonTouchableLastMonthDayTextStyle: {},
                 }}
-                style={styles.image}
+                disableRange={true}
+                orientation="horizontal"
               />
             </View>
-            <View style={styles.topDoctorDetails}>
-              <Text style={styles.topDoctorName} numberOfLines={1}>
-                Dr. Nathan Fox
-              </Text>
-              <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
-                MBBS, FCP, MACP
-              </Text>
-              <View style={styles.topDoctorRating}>
-                <View style={styles.stars}>
-                  {[1, 2, 3, 4, 5].map((item) => (
-                    <FontAwesome
-                      key={item}
-                      name='star'
-                      size={15}
-                      color={colors.gold}
-                    />
+
+            <View style={styles.timeContainer}>
+              <View style={styles.timeItem}>
+                <Text style={styles.title}>Morning Slots</Text>
+
+                <View style={styles.availableTime}>
+                  {getMorningSlots(slots).map((item) => (
+                    <TouchableOpacity
+                      key={item.id}
+                      onPress={() => handleSelectSlot(item)}
+                      style={[
+                        styles.availableTimeItem,
+                        {
+                          backgroundColor: renderBackgroundColor(item, colors),
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.timeText,
+                          { color: renderColor(item, colors) },
+                        ]}
+                      >
+                        {item.time}
+                      </Text>
+                    </TouchableOpacity>
                   ))}
                 </View>
-                <Text style={styles.doctorRating}>(227)</Text>
               </View>
-              <Text style={styles.headerSubTitle}>Book an Appointment</Text>
-            </View>
-          </View>
-          <View style={styles.calendarContainer}>
-            <Calendar
-              scrollEnabled={false}
-              onChange={(range) => console.log(range)}
-              minDate={new Date(2018, 3, 1)}
-              startDate={new Date(2018, 3, 1)}
-              endDate={new Date(2018, 3, 30)}
-              numberOfMonths={1}
-              theme={{
-                activeDayColor: {},
-                monthTitleTextStyle: {
-                  color: '#6d95da',
-                  fontWeight: '300',
-                  fontSize: 16,
-                },
-                emptyMonthContainerStyle: {},
-                emptyMonthTextStyle: {
-                  fontWeight: '200',
-                },
-                weekColumnsContainerStyle: {},
-                weekColumnStyle: {
-                  paddingVertical: 5,
-                },
-                weekColumnTextStyle: {
-                  color: '#b6c1cd',
-                  fontSize: 14,
-                  fontWeight: 'bold',
-                },
-                nonTouchableDayContainerStyle: {},
-                nonTouchableDayTextStyle: {},
-                startDateContainerStyle: {},
-                endDateContainerStyle: {},
-                dayContainerStyle: {},
-                dayTextStyle: {
-                  color: '#2d4150',
-                  fontWeight: '500',
-                  fontSize: 15,
-                },
-                dayOutOfRangeContainerStyle: {},
-                dayOutOfRangeTextStyle: {},
-                todayContainerStyle: {},
-                todayTextStyle: {
-                  color: colors.primary,
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                },
-                activeDayContainerStyle: {
-                  backgroundColor: colors.primary,
-                },
-                activeDayTextStyle: {
-                  color: 'white',
-                },
-                nonTouchableLastMonthDayTextStyle: {},
-              }}
-              disableRange={true}
-              orientation='horizontal'
-            />
-          </View>
 
-          <View style={styles.timeContainer}>
-            <View style={styles.timeItem}>
-              <Text style={styles.title}>Morning Slots</Text>
+              <View style={styles.timeItem}>
+                <Text style={styles.title}>Afternoon Slots</Text>
 
-              <View style={styles.availableTime}>
-                {morningSlots.map((item) => (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={[
-                      styles.availableTimeItem,
-                      { backgroundColor: renderBackgroundColor(item, colors) },
-                    ]}
-                  >
-                    <Text
+                <View style={styles.availableTime}>
+                  {getAfternoonSlots(slots).map((item) => (
+                    <TouchableOpacity
+                      key={item.id}
+                      onPress={() => handleSelectSlot(item)}
                       style={[
-                        styles.timeText,
-                        { color: renderColor(item, colors) },
+                        styles.availableTimeItem,
+                        {
+                          backgroundColor: renderBackgroundColor(item, colors),
+                        },
                       ]}
                     >
-                      {item.time}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                      <Text
+                        style={[
+                          styles.timeText,
+                          { color: renderColor(item, colors) },
+                        ]}
+                      >
+                        {item.time}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
             </View>
 
-            <View style={styles.timeItem}>
-              <Text style={styles.title}>Afternoon Slots</Text>
-
-              <View style={styles.availableTime}>
-                {afternoonSlots.map((item) => (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={[
-                      styles.availableTimeItem,
-                      { backgroundColor: renderBackgroundColor(item, colors) },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.timeText,
-                        { color: renderColor(item, colors) },
-                      ]}
-                    >
-                      {item.time}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+            <View style={styles.bookingInfoContainer}>
+              <AppInput
+                placeholder="Description"
+                style={{ height: 100 }}
+                multiline={true}
+                label="Description"
+                onChangeText={handleChange}
+              />
             </View>
-            <View style={styles.timeItem}>
-              <Text style={styles.title}>Evening Slots</Text>
-              <View style={styles.availableTime}>
-                {eveningSlots.map((item) => (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={[
-                      styles.availableTimeItem,
-                      { backgroundColor: renderBackgroundColor(item, colors) },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.timeText,
-                        { color: renderColor(item, colors) },
-                      ]}
-                    >
-                      {item.time}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+
+            <View style={styles.confirmation}>
+              <TouchableOpacity
+                style={styles.submitBtn}
+                onPress={handleSubmitAppointment}
+              >
+                <Text style={styles.submitBtnText}>Confirm Appointment</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-
-          <View style={styles.bookingInfoContainer}>
-            <AppInput
-              placeholder='Description'
-              style={{ height: 100 }}
-              multiline={true}
-              label='Desciption'
-            />
-          </View>
-
-          <View style={styles.confirmation}>
-            <TouchableOpacity style={styles.submitBtn}>
-              <Text style={styles.submitBtnText}>Confirm Appointment</Text>
-            </TouchableOpacity>
-          </View>
-        </Screen>
-      </ScrollView>
+          </Screen>
+        </ScrollView>
+      )}
     </KeyboardAvoidingView>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    doctors: state.entities.doctors.list,
+    loading: state.entities.doctors.loading,
+  };
+};
+
+export default connect(mapStateToProps)(BookingCalenderScreen);
 
 const styles = StyleSheet.create({
   safeView: {

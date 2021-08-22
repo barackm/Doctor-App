@@ -1,13 +1,14 @@
-import React from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import colors from "../../config/colors";
-import style from "../../config/style";
+import React from 'react';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
+import colors from '../../config/colors';
+import style from '../../config/style';
 
 export default function AppInput({
   placeholder,
   style = {},
   multiline = false,
   label,
+  onChangeText,
 }) {
   return (
     <View style={styles.container}>
@@ -17,6 +18,7 @@ export default function AppInput({
           style={[styles.input, { ...style }]}
           placeholder={placeholder}
           multiline={multiline}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
@@ -25,7 +27,7 @@ export default function AppInput({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
     marginVertical: 20,
   },
   inputContainer: {
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.medium,
     marginBottom: 10,
   },

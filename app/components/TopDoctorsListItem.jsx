@@ -3,12 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../config/colors';
 import style from '../config/style';
+import capitalize from '../utils/capitalize';
 
-export default function TopDoctorsListItem({ navigation }) {
+export default function TopDoctorsListItem({ navigation, doctor }) {
+  const { name, lastName } = doctor;
   return (
     <TouchableOpacity
       style={styles.topDoctorsContainer}
-      onPress={() => navigation.navigate('Doctor')}
+      onPress={() => navigation.navigate('Doctor', doctor)}
     >
       <View style={styles.topDoctorImageContainer}>
         <Image
@@ -20,7 +22,7 @@ export default function TopDoctorsListItem({ navigation }) {
       </View>
       <View style={styles.topDoctorDetails}>
         <Text style={styles.topDoctorName} numberOfLines={1}>
-          Dr. Nathan Fox
+          {capitalize(name)} {capitalize(lastName)}
         </Text>
         <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
           MBBS, FCP, MACP
@@ -30,7 +32,7 @@ export default function TopDoctorsListItem({ navigation }) {
             {[1, 2, 3, 4, 5].map((item) => (
               <FontAwesome
                 key={item}
-                name='star'
+                name="star"
                 size={15}
                 color={colors.gold}
               />

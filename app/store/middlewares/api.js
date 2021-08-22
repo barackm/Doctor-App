@@ -6,8 +6,9 @@ const api =
   ({ dispatch }) =>
   (next) =>
   (action) => {
-    // dispatch({ type: 'UNKNOWN' });
-    next(action);
+    // next(action);
+    console.log('dispatched an action...');
+    dispatch({ type: 'UNKNOWN' });
   };
 
 export default api;

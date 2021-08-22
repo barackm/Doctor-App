@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,14 +6,18 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-} from "react-native";
-import Screen from "../components/Screen";
-import colors from "../config/colors";
-import style from "../config/style";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+} from 'react-native';
+import Screen from '../components/Screen';
+import colors from '../config/colors';
+import style from '../config/style';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import capitalize from '../utils/capitalize';
 
-export default function DoctorProfileScreen({ navigation }) {
+export default function DoctorProfileScreen(props) {
+  const { navigation, route } = props;
+  const { _id, name, lastName } = route.params;
+
   return (
     <ScrollView style={styles.mainView}>
       <Screen style={styles.container}>
@@ -24,14 +28,13 @@ export default function DoctorProfileScreen({ navigation }) {
               <Image
                 style={styles.profile}
                 source={{
-                  uri:
-                    "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                  uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
                 }}
               />
             </View>
             <View style={styles.topDoctorDetails}>
               <Text style={styles.topDoctorName} numberOfLines={1}>
-                Dr. Nathan Fox
+                {capitalize(name)} {capitalize(lastName)}
               </Text>
               <Text style={styles.topDoctorSubTitle} numberOfLines={1}>
                 MBBS, FCP, MACP
@@ -54,8 +57,7 @@ export default function DoctorProfileScreen({ navigation }) {
                 <Image
                   style={styles.patientImage}
                   source={{
-                    uri:
-                      "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Tynan-Allan.jpeg",
+                    uri: 'https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Tynan-Allan.jpeg',
                   }}
                 />
               </View>
@@ -63,8 +65,7 @@ export default function DoctorProfileScreen({ navigation }) {
                 <Image
                   style={styles.patientImage}
                   source={{
-                    uri:
-                      "https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=800&q=70",
+                    uri: 'https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=800&q=70',
                   }}
                 />
               </View>
@@ -74,8 +75,7 @@ export default function DoctorProfileScreen({ navigation }) {
                 <Image
                   style={styles.patientImage}
                   source={{
-                    uri:
-                      "https://perfectczechwomen.com/wp-content/uploads/2019/04/New-Profile-20-500x536.jpg",
+                    uri: 'https://perfectczechwomen.com/wp-content/uploads/2019/04/New-Profile-20-500x536.jpg',
                   }}
                 />
               </View>
@@ -97,7 +97,7 @@ export default function DoctorProfileScreen({ navigation }) {
             <View style={styles.book}>
               <TouchableOpacity
                 style={styles.bookBtn}
-                onPress={() => navigation.navigate("Booking")}
+                onPress={() => navigation.navigate('Booking', _id)}
               >
                 <MaterialCommunityIcons
                   name="calendar-month-outline"
@@ -176,23 +176,23 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    position: "relative",
-    alignItems: "center",
-    width: "100%",
+    position: 'relative',
+    alignItems: 'center',
+    width: '100%',
     paddingBottom: 20,
   },
   headerBg: {
-    width: "100%",
+    width: '100%',
     height: 200,
     backgroundColor: colors.primary,
   },
   profileHeader: {
-    width: "90%",
+    width: '90%',
     height: 230,
     backgroundColor: colors.white,
     borderRadius: 20,
     ...style.boxShaddow,
-    position: "absolute",
+    position: 'absolute',
     top: 50,
     paddingVertical: 15,
     paddingHorizontal: 15,
@@ -201,21 +201,22 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 20,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   headerUp: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   profile: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   topDoctorDetails: {
     paddingLeft: 20,
+    textTransform: 'uppercase',
   },
   topDoctorName: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
   },
 
@@ -225,12 +226,12 @@ const styles = StyleSheet.create({
   },
 
   topDoctorRating: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rating: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginHorizontal: 5,
   },
 
@@ -247,16 +248,16 @@ const styles = StyleSheet.create({
   },
   about: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 12,
     color: colors.medium,
   },
   book: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   bookBtn: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -264,52 +265,52 @@ const styles = StyleSheet.create({
   },
   bookTitle: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.white,
     marginLeft: 10,
   },
 
   headerDown: {
     marginTop: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   patient: {
     width: 35,
     height: 35,
     borderRadius: 17.5,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 4,
     borderColor: colors.white,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   patientImage: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   patientsNumber: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   patientElse: {
     transform: [{ translateX: -8 }],
   },
 
   patientCount: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 10,
   },
   patientNameContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     transform: [{ translateX: -20 }],
   },
   availabilityContainer: {
     marginTop: 100,
     paddingHorizontal: 20,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   availabilityItem: {
     flex: 1,
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   hospitalTitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   days: {
     color: colors.medium,
@@ -336,19 +337,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     marginTop: 6,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   biographyDetails: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 20,
     marginTop: 20,
   },
 
   biographyTitle: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.medium,
   },
   educationErea: {
@@ -362,12 +363,12 @@ const styles = StyleSheet.create({
   },
   educationTitle: {
     ...style.text,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.lighter,
     fontSize: 15,
   },
   educationDetail: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.medium,
     marginTop: 5,
   },

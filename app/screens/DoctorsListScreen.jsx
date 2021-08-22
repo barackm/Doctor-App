@@ -50,10 +50,11 @@ class DoctorsListScreen extends React.Component {
             {loading ? (
               <Text>Loading</Text>
             ) : (
-              doctors.map((item) => (
+              doctors.map((doctor) => (
                 <TopDoctorsListItem
                   navigation={this.props.navigation}
-                  key={item._id}
+                  key={doctor._id}
+                  doctor={doctor}
                 />
               ))
             )}
