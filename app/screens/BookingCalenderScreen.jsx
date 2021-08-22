@@ -19,6 +19,8 @@ import colors from '../config/colors';
 import style from '../config/style';
 import AppInput from '../components/forms/AppInput';
 import capitalize from '../utils/capitalize';
+import { TextInput } from 'react-native-gesture-handler';
+import Preloader from '../components/common/Preloader';
 
 const BookingCalenderScreen = ({ route, navigation, doctors, loading }) => {
   const { params } = route;
@@ -127,7 +129,7 @@ const BookingCalenderScreen = ({ route, navigation, doctors, loading }) => {
       keyboardVerticalOffset={60}
     >
       {loading || !name ? (
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Preloader />
       ) : (
         <FlatList
           data={[]}

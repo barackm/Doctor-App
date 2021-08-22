@@ -26,6 +26,5 @@ export const loginUserAsync = (user) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
   console.log('trying to logout...');
   await storage.removeAuthToken();
-  console.log(await storage.getAuthToken());
   dispatch(logoutUserSuccess());
 };

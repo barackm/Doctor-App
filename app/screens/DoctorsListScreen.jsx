@@ -18,6 +18,7 @@ import ListItem from '../components/ListItem';
 import TopDoctorsListItem from '../components/TopDoctorsListItem';
 
 import { loadDoctorsAsync } from '../store/thunkCreators/doctorsThunk';
+import Preloader from '../components/common/Preloader';
 
 class DoctorsListScreen extends React.Component {
   componentDidMount() {
@@ -43,7 +44,7 @@ class DoctorsListScreen extends React.Component {
           </TouchableOpacity>
         </View>
         {loading ? (
-          <Text>Loading...</Text>
+          <Preloader />
         ) : (
           <ScrollView style={styles.mainView}>
             <ScrollView

@@ -38,7 +38,8 @@
     "remote-redux-devtools": "^0.5.16",
     "watchman": "^1.0.0",
     "yup": "^0.32.9",
-    "expo-secure-store": "~10.1.0"
+    "expo-secure-store": "~10.1.0",
+    "lottie-react-native": "3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

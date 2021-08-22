@@ -14,6 +14,7 @@ const Main = ({ isUserAuthenticated }) => {
   const getToken = async () => {
     try {
       const token = await storage.getAuthToken();
+      console.log(setIsAuthenticated);
       setIsAuthenticated(token || isUserAuthenticated ? true : false);
     } catch (error) {
       return null;

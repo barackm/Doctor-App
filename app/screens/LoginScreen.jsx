@@ -20,13 +20,14 @@ import Screen from '../components/Screen';
 import style from '../config/style';
 import { loginUserAsync } from '../store/thunkCreators/authThunk';
 import AppForm from '../components/forms/AppForm';
+import Preloader from '../components/common/Preloader';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
 
-const LoginScreen = ({ navigation, loginUser }) => {
+const LoginScreen = ({ navigation, loginUser, loading }) => {
   const handleSubmit = (values) => {
     loginUser({ email: values.email, password: values.password });
   };
@@ -44,37 +45,49 @@ const LoginScreen = ({ navigation, loginUser }) => {
             <Text style={styles.welcome}>Welcome Back</Text>
             <Text style={styles.account}>Login to your account</Text>
           </View>
-          <AppForm
-            initialValues={{ email: '', password: '' }}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            <Input
-              placeholder="Username or Email"
-              icon={<AntDesign name="user" size={30} color={colors.primary} />}
-              secureTextEntry={false}
-              name="email"
-            />
-            <Input
-              placeholder="Password"
-              icon={<AntDesign name="lock1" size={24} color={colors.primary} />}
-              secureTextEntry={true}
-              name="password"
-            />
-            <SubmitBtn text="Login" />
-          </AppForm>
-          <View style={styles.myDoctor}>
-            <View style={styles.leftLine} />
-            <Text style={styles.myDoctorText}>MY DOCTOR</Text>
-            <View style={styles.rightLine} />
-          </View>
+          {loading ? (
+            <Preloader />
+          ) : (
+            <AppForm
+              initialValues={{ email: '', password: '' }}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              <Input
+                placeholder="Username or Email"
+                icon={
+                  <AntDesign name="user" size={30} color={colors.primary} />
+                }
+                secureTextEntry={false}
+                name="email"
+              />
+              <Input
+                placeholder="Password"
+                icon={
+                  <AntDesign name="lock1" size={24} color={colors.primary} />
+                }
+                secureTextEntry={true}
+                name="password"
+              />
+              <SubmitBtn text="Login" />
+            </AppForm>
+          )}
+          {!loading && (
+            <View style={styles.myDoctor}>
+              <View style={styles.leftLine} />
+              <Text style={styles.myDoctorText}>MY DOCTOR</Text>
+              <View style={styles.rightLine} />
+            </View>
+          )}
         </SafeAreaView>
-        <View style={styles.createAccount}>
-          <Text style={styles.missAccount}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={styles.signup}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
+        {!loading && (
+          <View style={styles.createAccount}>
+            <Text style={styles.missAccount}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <Text style={styles.signup}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </Screen>
     </KeyboardAvoidingView>
   );
@@ -173,8 +186,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+});
+
 const mapDispatchToProps = {
   loginUser: (user) => loginUserAsync(user),
 };
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

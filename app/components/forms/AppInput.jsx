@@ -10,8 +10,8 @@ export default function AppInput({
   multiline = false,
   label,
   name,
+  onChangeText,
 }) {
-  const { handleChange, values } = useFormikContext();
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -19,9 +19,8 @@ export default function AppInput({
         <TextInput
           style={[styles.input, { ...style }]}
           placeholder={placeholder}
-          value={values[name]}
           multiline={multiline}
-          onChangeText={handleChange(name)}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
