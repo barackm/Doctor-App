@@ -13,7 +13,18 @@ const slice = createSlice({
     list: [],
     error: null,
     lastFetch: null,
-    selectedDoctorAppointments: [],
+    selectedDoctorAppointments: [
+      {
+        date: 'Wed Sep 29 2021 00:00:00 GMT+0200 (CAT)',
+        description: '',
+        time: '11:00 am',
+      },
+      {
+        date: 'Thu Sep 23 2021 00:00:00 GMT+0200 (CAT)',
+        description: '',
+        time: '03:00 pm',
+      },
+    ],
   },
   reducers: {
     appointmentsRequested: (appointments) => {
@@ -112,7 +123,6 @@ export const getDoctorAppointments = (doctorId) => (dispatch) => {
       onSuccess: doctorAppointmentsLoaded.type,
       url: `${url}/doctors/${doctorId}`,
       method: 'GET',
-      data: appointment,
     }),
   );
 };

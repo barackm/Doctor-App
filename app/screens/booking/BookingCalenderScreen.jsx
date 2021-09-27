@@ -65,7 +65,6 @@ const BookingCalenderScreen = ({
     setDoctor(d);
     loadAppointments();
     doctor && getDoctorAppointments(doctor._id);
-    console.log(doctorAppointments);
   }, []);
 
   const renderBackgroundColor = (item, colors) => {
@@ -95,6 +94,22 @@ const BookingCalenderScreen = ({
 
   const handleSelectDates = (date) => {
     setSelectedDate(date);
+    setSlots(
+      slots.map((slot) => {
+        slot.taken = false;
+        return slot;
+      }),
+    );
+    doctorAppointments.forEach((appointment) => {
+      if (appointment.date === date.startDate.toString()) {
+        const index = slots.findIndex((s) => s.time === appointment.time);
+        const newSlots = [...slots];
+        newSlots[index].taken = true;
+        setSlots(newSlots);
+      } else {
+        // setSlots(slots.map((slot) => (slot.taken = false)));
+      }
+    });
   };
 
   const handleSelectSlot = (slot) => {
@@ -132,7 +147,7 @@ const BookingCalenderScreen = ({
       const appointment = {
         description,
         time: selectedSlot.time,
-        date: selectedDate.startDate,
+        date: selectedDate.startDate.toString(),
       };
 
       createAppointment(appointment);
@@ -346,7 +361,7 @@ const mapStateToProps = (state) => {
   return {
     doctors: state.entities.doctors.list,
     loading: state.entities.doctors.loading,
-    doctorAppointments: state.entities.doctors.selectedDoctorAppointments,
+    doctorAppointments: state.entities.appointments.selectedDoctorAppointments,
   };
 };
 
