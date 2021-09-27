@@ -1,49 +1,108 @@
-import {
-  API_CALL_BEGAN,
-  LOGIN_USER_ERROR,
-  LOGIN_USER_SUCCESS,
-  LOGOUT_USER_SUCCESS,
-} from '../actions/actionTypes';
+import { createSlice } from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message';
 
-const initialState = {
-  loading: false,
-  error: null,
-  currentUser: null,
-  isAuthenticated: false,
+import storage from '../../auth/storage';
+import * as actions from '../actions/api';
+
+const slice = createSlice({
+  name: 'auth',
+  initialState: {
+    loading: false,
+    currentUser: null,
+    isAuthenticated: false,
+    error: null,
+  },
+  reducers: {
+    authRequested: (auth) => {
+      auth.loading = true;
+      auth.error = null;
+    },
+    userLoggedin: (auth, action) => {
+      auth.loading = false;
+      auth.currentUser = action.payload;
+      auth.isAuthenticated = true;
+      Toast.show({
+        type: 'success',
+        text1: 'Hello',
+        text2: 'Welcome to My Doctor App 👋',
+      });
+    },
+    userLoginFailed: (auth, action) => {
+      auth.isAuthenticated = false;
+      auth.loading = false;
+      auth.error = action.payload;
+      auth.currentUser = null;
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: action.payload,
+      });
+    },
+    userLoggedOut: (auth) => {
+      auth.isAuthenticated = false;
+      auth.currentUser = null;
+    },
+    userSignedup: (auth, action) => {
+      auth.loading = false;
+      auth.currentUser = action.payload;
+      auth.isAuthenticated = true;
+      Toast.show({
+        type: 'success',
+        text1: 'Hello',
+        text2: 'Welcome to My Doctor App 👋',
+      });
+    },
+    userSignupFailed: (auth, action) => {
+      auth.isAuthenticated = false;
+      auth.loading = false;
+      auth.error = action.payload;
+      auth.currentUser = null;
+    },
+  },
+});
+
+const {
+  authRequested,
+  userLoggedin,
+  userLoginFailed,
+  userSignedup,
+  userSignupFailed,
+  userLoggedOut,
+} = slice.actions;
+export default slice.reducer;
+
+export const loginUser = (user) => (dispatch) => {
+  dispatch(
+    actions.apiCallBegan({
+      onStart: authRequested.type,
+      onError: userLoginFailed.type,
+      onSuccess: userLoggedin.type,
+      url: '/auth',
+      method: 'POST',
+      data: user,
+    }),
+  );
 };
 
-const auth = (state = initialState, action) => {
-  switch (action.type) {
-    case API_CALL_BEGAN:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case LOGIN_USER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        currentUser: action.payload,
-        isAuthenticated: true,
-      };
-    case LOGIN_USER_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case LOGOUT_USER_SUCCESS:
-      return {
-        ...state,
-        currentUser: null,
-        isAuthenticated: false,
-        loading: false,
-      };
-    default:
-      return state;
-  }
+export const signupUser = (user) => (dispatch) => {
+  dispatch(
+    actions.apiCallBegan({
+      onStart: authRequested.type,
+      onError: userSignupFailed.type,
+      onSuccess: userSignedup.type,
+      url: '/doctors',
+      method: 'POST',
+      data: user,
+    }),
+  );
 };
 
-export default auth;
+export const logoutUser = () => (dispatch) => {
+  storage.removeAuthToken();
+  dispatch({ type: userLoggedOut.type });
+  Toast.show({
+    type: 'success',
+    text1: 'Hello',
+    text2: 'Logged out successfully  👋',
+  });
+};

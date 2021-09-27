@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,14 +13,14 @@ import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import * as Yup from 'yup';
 
-import colors from '../config/colors';
-import Input from '../components/forms/Input';
-import SubmitBtn from '../components/forms/SubmitBtn';
-import Screen from '../components/Screen';
-import style from '../config/style';
-import { loginUserAsync } from '../store/thunkCreators/authThunk';
-import AppForm from '../components/forms/AppForm';
-import Preloader from '../components/common/Preloader';
+import colors from '../../config/colors';
+import Input from '../../components/forms/Input';
+import SubmitBtn from '../../components/forms/SubmitBtn';
+import Screen from '../../components/Screen';
+import style from '../../config/style';
+import AppForm from '../../components/forms/AppForm';
+import Preloader from '../../components/common/Preloader';
+import { loginUser } from '../../store/reducers/auth';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required('Email is required'),
@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation, loginUser, loading }) => {
         <SafeAreaView style={styles.loginSubContainer}>
           <View style={styles.logoContainer}>
             <Image
-              source={require('../../assets/logo3.png')}
+              source={require('../../../assets/logo3.png')}
               style={styles.image}
             />
           </View>
@@ -96,10 +96,8 @@ const LoginScreen = ({ navigation, loginUser, loading }) => {
 const styles = StyleSheet.create({
   safeView: {
     flex: 1,
-    // width: '100%',
   },
   container: {
-    // flex: 1,
     width: '100%',
     backgroundColor: colors.light,
     alignItems: 'center',
@@ -191,7 +189,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  loginUser: (user) => loginUserAsync(user),
+  loginUser: (user) => loginUser(user),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

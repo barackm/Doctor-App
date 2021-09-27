@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import jwtDecode from 'jwt-decode';
 
 import AppNavigator from './navigation/AppNavigator';
 import AuthNavigator from './navigation/AuthNavigator';
 import storage from './auth/storage';
+import { loginUserSuccess } from './store/actions/actionCreators';
 
-const Main = ({ isUserAuthenticated }) => {
+const Main = ({ isUserAuthenticated, loginUser }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   useEffect(() => {
     getToken();
@@ -16,6 +18,10 @@ const Main = ({ isUserAuthenticated }) => {
       const token = await storage.getAuthToken();
       console.log(setIsAuthenticated);
       setIsAuthenticated(token || isUserAuthenticated ? true : false);
+      if (token) {
+        const decoded = jwtDecode(token);
+        loginUser(decoded);
+      }
     } catch (error) {
       return null;
     }
@@ -31,15 +37,8 @@ const Main = ({ isUserAuthenticated }) => {
 const mapStateToProps = (state) => ({
   isUserAuthenticated: state.auth.isAuthenticated,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  loginUser: (user) => loginUserSuccess(user),
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
-
-// const hideTabBar = () => {
-// const route = useRoute();
-// if (route.state && route.state.index > 0) {
-//   navigation.setOptions({ tabBarVisible: false });
-// } else {
-//   navigation.setOptions({ tabBarVisible: true });
-// }
-// };

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Screen from '../components/Screen';
-import style from '../config/style';
-import colors from '../config/colors';
+import Screen from '../../components/Screen';
+import style from '../../config/style';
+import colors from '../../config/colors';
 
 export default function EditProfileScreen({ navigation }) {
   return <Screen style={styles.container}></Screen>;

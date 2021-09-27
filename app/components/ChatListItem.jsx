@@ -1,12 +1,13 @@
-import React from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import colors from "../config/colors";
-import style from "../config/style";
+import React from 'react';
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import colors from '../config/colors';
+import style from '../config/style';
 export default function ChatListItem({ item, onPress }) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        {item.isOnline && <View style={styles.onlineIndicator}></View>}
       </View>
       <View style={styles.chatDetails}>
         <View style={styles.header}>
@@ -33,8 +34,8 @@ export default function ChatListItem({ item, onPress }) {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   image: {
@@ -45,20 +46,20 @@ const styles = StyleSheet.create({
   chatDetails: {
     flex: 1,
     paddingLeft: 10,
-    height: "100%",
+    height: '100%',
   },
   user: {
     ...style.text,
-    fontWeight: "900",
+    fontWeight: '900',
     fontSize: 18,
   },
   header: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   messageDetails: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   messageText: {
     fontSize: 16,
@@ -66,13 +67,13 @@ const styles = StyleSheet.create({
     // fontWeight: "500",
   },
   messageNumberText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.white,
     fontSize: 12,
   },
 
   timing: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   messagesNumber: {
     marginLeft: 10,
@@ -80,7 +81,18 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 15,
     backgroundColor: colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  onlineIndicator: {
+    position: 'absolute',
+    right: 10,
+    bottom: 0,
+    width: 14,
+    height: 14,
+    borderRadius: 10,
+    backgroundColor: colors.green,
+    borderColor: colors.white,
+    borderWidth: 1,
   },
 });

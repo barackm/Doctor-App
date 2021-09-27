@@ -7,12 +7,12 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import Screen from '../components/Screen';
-import colors from '../config/colors';
-import style from '../config/style';
+import Screen from '../../components/Screen';
+import colors from '../../config/colors';
+import style from '../../config/style';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import capitalize from '../utils/capitalize';
+import capitalize from '../../utils/capitalize';
 
 export default function DoctorProfileScreen(props) {
   const { navigation, route } = props;

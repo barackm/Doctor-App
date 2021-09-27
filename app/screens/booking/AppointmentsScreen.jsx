@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import Screen from '../components/Screen';
-import style from '../config/style';
-import AppointmentsList from '../components/AppointmentsList';
-import colors from '../config/colors';
+import { StyleSheet } from 'react-native';
+import Screen from '../../components/Screen';
+import style from '../../config/style';
+import AppointmentsList from '../../components/AppointmentsList';
+import colors from '../../config/colors';
 
 export default function ApointmentsScreen({ navigation }) {
   return (

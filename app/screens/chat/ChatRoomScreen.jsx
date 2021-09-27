@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,20 +6,20 @@ import {
   TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Text,
-} from "react-native";
-import {} from "@react-navigation/stack";
-import colors from "../config/colors";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import EmojiSelector from "react-native-emoji-selector";
+  FlatList,
+} from 'react-native';
 
-import Screen from "../components/Screen";
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import EmojiSelector from 'react-native-emoji-selector';
+
+import colors from '../../config/colors';
+import Screen from '../../components/Screen';
+import ChatMessage from '../../components/ChatMessage';
 
 export default class ChatRoomScreen extends PureComponent {
   state = {
     height: 0,
-    message: "",
+    message: '',
     showEmojis: false,
   };
 
@@ -49,6 +49,44 @@ export default class ChatRoomScreen extends PureComponent {
 
   render() {
     const messageAvailable = this.state.message.trim().length;
+    const messages = [
+      {
+        id: 1,
+        isCurrentUser: true,
+        body: 'Hello dear Doctor, I hope you are doing great',
+        createdAt: '12:13',
+      },
+      {
+        id: 2,
+        isCurrentUser: false,
+        body: 'Yes I am doing great, I guess you too?',
+        createdAt: '12:15',
+      },
+      {
+        id: 3,
+        isCurrentUser: true,
+        body: 'Not really😔',
+        createdAt: '12:16',
+      },
+      {
+        id: 6,
+        isCurrentUser: true,
+        body: 'I have a problem with my neck🤒',
+        createdAt: '12:16',
+      },
+      {
+        id: 4,
+        isCurrentUser: false,
+        body: 'Oh I am so sorry, since when do you have that problem?',
+        createdAt: '14:13',
+      },
+      {
+        id: 5,
+        isCurrentUser: true,
+        body: 'Since this moring Doctor',
+        createdAt: '14:15',
+      },
+    ];
     return (
       <KeyboardAvoidingView
         style={styles.safeView}
@@ -56,14 +94,12 @@ export default class ChatRoomScreen extends PureComponent {
         keyboardVerticalOffset={60}
       >
         <Screen style={styles.container}>
-          <TouchableWithoutFeedback
-            style={{ flex: 1 }}
-            onPress={this.handleHideEditor}
-          >
-            <View style={styles.editorMessagesContainer}>
-              <Text>Messages</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          <FlatList
+            style={styles.editorMessagesContainer}
+            data={messages}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={(message) => <ChatMessage message={message} />}
+          />
           <View style={styles.editor}>
             <View style={styles.editorControls}>
               {this.state.showEmojis ? (
@@ -121,7 +157,7 @@ export default class ChatRoomScreen extends PureComponent {
               <TouchableOpacity
                 style={[
                   styles.sendMessage,
-                  { display: messageAvailable ? "flex" : "none" },
+                  { display: messageAvailable ? 'flex' : 'none' },
                 ]}
               >
                 <MaterialCommunityIcons
@@ -151,21 +187,21 @@ export default class ChatRoomScreen extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
+    width: '100%',
   },
   safeView: {
     flex: 1,
-    width: "100%",
+    width: '100%',
   },
   editor: {
-    flexDirection: "column",
-    width: "100%",
+    flexDirection: 'column',
+    width: '100%',
     backgroundColor: colors.white,
     paddingHorizontal: 10,
   },
   editorControls: {
-    flexDirection: "row",
-    width: "100%",
+    flexDirection: 'row',
+    width: '100%',
     backgroundColor: colors.white,
     paddingVertical: 15,
     paddingHorizontal: 10,
@@ -183,12 +219,12 @@ const styles = StyleSheet.create({
   },
   emojisContainer: {
     height: 250,
-    width: "100%",
+    width: '100%',
   },
   sendMessage: {
     backgroundColor: colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -196,8 +232,7 @@ const styles = StyleSheet.create({
 
   editorMessagesContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    width: '100%',
+    paddingTop: 10,
   },
 });

@@ -1,40 +1,42 @@
-import {
-  DOCTORS_LOADED_SUCCESS,
-  DOCTORS_LOADED_ERROR,
-  API_CALL_BEGAN,
-} from '../actions/actionTypes';
+import { createSlice } from '@reduxjs/toolkit';
+import * as actions from '../actions/api';
 
-const initialState = {
-  loading: false,
-  list: [],
-  error: null,
-  lastFech: null,
+const slice = createSlice({
+  name: 'doctors',
+  initialState: {
+    loading: false,
+    list: [],
+    lastFetch: null,
+    error: null,
+  },
+  reducers: {
+    doctorsRequested: (doctors) => {
+      doctors.loading = true;
+      doctors.error = null;
+    },
+    doctorsLoaded: (doctors, action) => {
+      doctors.loading = false;
+      doctors.error = null;
+      doctors.list = action.payload;
+    },
+    doctorsRequestFailed: (doctors, action) => {
+      doctors.loading = false;
+      doctors.error = action.payload;
+    },
+  },
+});
+
+const { doctorsLoaded, doctorsRequested, doctorsRequestFailed } = slice.actions;
+export default slice.reducer;
+
+export const loadDoctors = () => (dispatch) => {
+  dispatch(
+    actions.apiCallBegan({
+      onStart: doctorsRequested.type,
+      onError: doctorsRequestFailed.type,
+      onSuccess: doctorsLoaded.type,
+      url: '/doctors',
+      method: 'GET',
+    }),
+  );
 };
-
-const doctors = (state = initialState, action) => {
-  switch (action.type) {
-    case API_CALL_BEGAN:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case DOCTORS_LOADED_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        list: action.payload,
-        error: null,
-      };
-    case DOCTORS_LOADED_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-export default doctors;

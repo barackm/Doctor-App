@@ -11,14 +11,14 @@ import {
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
-import Screen from '../components/Screen';
-import colors from '../config/colors';
-import style from '../config/style';
-import ListItem from '../components/ListItem';
-import TopDoctorsListItem from '../components/TopDoctorsListItem';
+import Screen from '../../components/Screen';
+import colors from '../../config/colors';
+import style from '../../config/style';
+import ListItem from '../../components/ListItem';
+import TopDoctorsListItem from '../../components/TopDoctorsListItem';
 
-import { loadDoctorsAsync } from '../store/thunkCreators/doctorsThunk';
-import Preloader from '../components/common/Preloader';
+import Preloader from '../../components/common/Preloader';
+import { loadDoctors } from '../../store/reducers/doctors';
 
 class DoctorsListScreen extends React.Component {
   componentDidMount() {
@@ -109,7 +109,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  loadDoctors: () => loadDoctorsAsync(),
+  loadDoctors: () => loadDoctors(),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(DoctorsListScreen);
 

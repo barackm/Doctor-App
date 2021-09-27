@@ -1,14 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import ChatRoomScreen from '../screens/ChatRoomScreen';
-import ChatListScreen from '../screens/ChatListScreen';
-// import TabBarContext from '../components/context/TabBarContext';
+import ChatRoomScreen from '../screens/chat/ChatRoomScreen';
+import ChatListScreen from '../screens/chat/ChatListScreen';
 const Stack = createStackNavigator();
 
 const ChatNavigator = () => {
-  // const tabBarContext = useContext(TabBarContext);
-  // tabBarContext.onChangeTab();
-
   return (
     <Stack.Navigator screenOptions={{}}>
       <Stack.Screen
