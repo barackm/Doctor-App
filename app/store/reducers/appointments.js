@@ -15,9 +15,14 @@ const slice = createSlice({
     lastFetch: null,
     selectedDoctorAppointments: [
       {
-        date: 'Wed Sep 29 2021 00:00:00 GMT+0200 (CAT)',
+        date: 'Fri Oct 01 2021 00:00:00 GMT+0200 (CAT)',
         description: '',
         time: '11:00 am',
+      },
+      {
+        date: 'Wed Sep 29 2021 00:00:00 GMT+0200 (CAT)',
+        description: '',
+        time: '02:00 pm',
       },
       {
         date: 'Thu Sep 23 2021 00:00:00 GMT+0200 (CAT)',
