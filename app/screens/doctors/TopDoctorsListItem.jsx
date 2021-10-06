@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import colors from '../config/colors';
-import style from '../config/style';
-import capitalize from '../utils/capitalize';
+import colors from '../../config/colors';
+import style from '../../config/style';
+import capitalize from '../../utils/capitalize';
 
-export default function TopDoctorsListItem({ navigation, doctor }) {
+const TopDoctorsListItem = ({ navigation, doctor }) => {
   const { name, lastName } = doctor;
+  console.log(doctor, 'doctor object');
   return (
     <TouchableOpacity
       style={styles.topDoctorsContainer}
@@ -20,6 +21,7 @@ export default function TopDoctorsListItem({ navigation, doctor }) {
           }}
         />
       </View>
+
       <View style={styles.topDoctorDetails}>
         <Text style={styles.topDoctorName} numberOfLines={1}>
           {capitalize(name)} {capitalize(lastName)}
@@ -43,7 +45,7 @@ export default function TopDoctorsListItem({ navigation, doctor }) {
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -181,3 +183,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
+
+export default TopDoctorsListItem;

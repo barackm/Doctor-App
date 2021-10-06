@@ -15,7 +15,7 @@ import Screen from '../../components/Screen';
 import colors from '../../config/colors';
 import style from '../../config/style';
 import ListItem from '../../components/ListItem';
-import TopDoctorsListItem from '../../components/TopDoctorsListItem';
+import TopDoctorsListItem from './TopDoctorsListItem';
 
 import Preloader from '../../components/common/Preloader';
 import { loadDoctors } from '../../store/reducers/doctors';
@@ -78,7 +78,6 @@ class DoctorsListScreen extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity style={styles.sortItem}>
                 <Octicons name="settings" size={20} color={colors.medium} />
-
                 <Text style={styles.topRelated}>Filter </Text>
               </TouchableOpacity>
             </View>

@@ -17,7 +17,6 @@ import capitalize from '../../utils/capitalize';
 export default function DoctorProfileScreen(props) {
   const { navigation, route } = props;
   const { _id, name, lastName, phoneNumber } = route.params;
-  console.log(route.params);
 
   return (
     <ScrollView style={styles.mainView}>

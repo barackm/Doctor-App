@@ -1,28 +1,48 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import colors from '../config/colors';
-import style from '../config/style';
-export default function ChatListItem({ item, onPress }) {
+import colors from '../../config/colors';
+import style from '../../config/style';
+export default function ChatListItem({ item, onPress, conversation }) {
+  const { message, recepient } = item;
+  // const unreadMessagesCount = conversation.messages.map(
+  //   (message) => message.read === false,
+  // ).length;
+  // console.log(conversation);
+  const unreadeMessagesCount = 90;
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        <Image
+          source={{
+            uri:
+              recepient.imageUrl ||
+              'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          }}
+          style={styles.image}
+        />
         {item.isOnline && <View style={styles.onlineIndicator}></View>}
       </View>
       <View style={styles.chatDetails}>
         <View style={styles.header}>
-          <Text style={styles.user}>{item.name}</Text>
+          <Text style={styles.user}>John lemon</Text>
           <Text style={styles.timing}>2:30pm</Text>
         </View>
         <View style={styles.messageDetails}>
-          <View style={styles.message}>
+          <View
+            style={{
+              ...styles.message,
+              maxWidth: unreadeMessagesCount > 0 ? '85%' : '',
+            }}
+          >
             <Text style={styles.messageText} numberOfLines={2}>
-              {item.message}
+              {message}
             </Text>
           </View>
-          {item.new && (
+          {unreadeMessagesCount > 0 && (
             <View style={styles.messagesNumber}>
-              <Text style={styles.messageNumberText}>4</Text>
+              <Text style={styles.messageNumberText}>
+                {unreadeMessagesCount}
+              </Text>
             </View>
           )}
         </View>

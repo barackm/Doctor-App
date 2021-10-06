@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -12,9 +12,13 @@ import { Entypo } from '@expo/vector-icons';
 import Screen from '../../components/Screen';
 import style from '../../config/style';
 import colors from '../../config/colors';
-import ChatListItem from '../../components/ChatListItem';
+import ChatListItem from './ChatListItem';
+import { connect } from 'react-redux';
+import { loginUser } from '../../store/reducers/auth';
+import jwtDecode from 'jwt-decode';
+import storage from '../../auth/storage';
 
-export default function ChatListScreen({ navigation }) {
+const ChatListScreen = ({ navigation, conversations }) => {
   const messages = [
     {
       id: 1,
@@ -91,6 +95,14 @@ export default function ChatListScreen({ navigation }) {
         'https://images.pexels.com/photos/2406949/pexels-photo-2406949.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     },
   ];
+  const [currentUser, setCurrentUser] = React.useState('');
+  useEffect(() => {
+    getAuthToken();
+  });
+  const getAuthToken = async () => {
+    const token = await storage.getAuthToken();
+    setCurrentUser(jwtDecode(token));
+  };
   return (
     <Screen style={styles.container}>
       <View style={styles.header}>
@@ -107,12 +119,19 @@ export default function ChatListScreen({ navigation }) {
       </View>
       <FlatList
         style={styles.chatListContainer}
-        data={messages}
-        keyExtractor={(item) => item.id.toString()}
+        data={conversations}
+        keyExtractor={(item) => item._id.toString()}
         renderItem={(item) => (
           <ChatListItem
-            onPress={() => navigation.navigate('Chat')}
-            item={item.item}
+            onPress={() => navigation.navigate('Chat', item.item._id)}
+            item={{
+              message: item.item.latestMessageText,
+              conversation: item,
+              recepient:
+                item.item.participents[0]._id === currentUser._id
+                  ? item.item.participents[1]
+                  : item.item.participents[0],
+            }}
           />
         )}
       />
@@ -121,7 +140,7 @@ export default function ChatListScreen({ navigation }) {
       </TouchableOpacity>
     </Screen>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -190,3 +209,15 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    conversations: state.entities.conversations.list,
+    currentUser: state.auth.currentUser,
+  };
+};
+
+const mapDispatchToProps = {
+  loginUser: () => loginUser(),
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ChatListScreen);

@@ -1,10 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import colors from '../config/colors';
+import colors from '../../config/colors';
 
-export default function ChatMessage({ message }) {
+export default function ChatMessage({ message, currentUser }) {
   const { item } = message;
-  const { isCurrentUser, createdAt } = item;
+  if (!item || !currentUser)
+    return (
+      <View
+        style={{
+          ...styles.container,
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Text>...</Text>
+      </View>
+    );
+  const { createdAt } = item;
+  const isCurrentUser = item.senderId === currentUser._id;
+
   return (
     <View
       style={{
@@ -17,6 +30,7 @@ export default function ChatMessage({ message }) {
           <Text>{createdAt}</Text>
         </View>
       )}
+
       <View
         style={
           isCurrentUser
@@ -29,7 +43,7 @@ export default function ChatMessage({ message }) {
             isCurrentUser ? styles.messageText : styles.messageTextCurrentUser
           }
         >
-          {item.body}
+          {item.text}
         </Text>
       </View>
       {!isCurrentUser && (

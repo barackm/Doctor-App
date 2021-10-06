@@ -11,16 +11,45 @@ import {
 
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import EmojiSelector from 'react-native-emoji-selector';
+import { connect } from 'react-redux';
 
 import colors from '../../config/colors';
 import Screen from '../../components/Screen';
-import ChatMessage from '../../components/ChatMessage';
+import ChatMessage from './ChatMessage';
+import storage from '../../auth/storage';
+import jwtDecode from 'jwt-decode';
+import { loadConversations } from '../../store/reducers/conversations';
 
-export default class ChatRoomScreen extends PureComponent {
+class ChatRoomScreen extends PureComponent {
   state = {
     height: 0,
     message: '',
     showEmojis: false,
+    conversation: {},
+    currentUser: null,
+    messages: [],
+  };
+
+  componentDidMount() {
+    const { route, conversations, loadConversations } = this.props;
+    loadConversations();
+    const conversationId = route.params;
+    const conversation = conversations.find(
+      (conversation) => conversation._id === conversationId,
+    );
+    if (!conversation) {
+      navigation.goBack();
+    }
+    this.getCurrentUser();
+    this.setState({
+      conversation: conversation,
+      messages: conversation.messages,
+    });
+  }
+
+  getCurrentUser = async () => {
+    const currentUser = await storage.getAuthToken();
+    this.setState({ currentUser: jwtDecode(currentUser) });
   };
 
   handleChange = (input) => {
@@ -29,7 +58,6 @@ export default class ChatRoomScreen extends PureComponent {
   handleAddEmojie = (emoji) => {
     let message = this.state.message;
     message = message.concat(emoji);
-    console.log(message);
     this.setState({ message });
   };
 
@@ -49,44 +77,9 @@ export default class ChatRoomScreen extends PureComponent {
 
   render() {
     const messageAvailable = this.state.message.trim().length;
-    const messages = [
-      {
-        id: 1,
-        isCurrentUser: true,
-        body: 'Hello dear Doctor, I hope you are doing great',
-        createdAt: '12:13',
-      },
-      {
-        id: 2,
-        isCurrentUser: false,
-        body: 'Yes I am doing great, I guess you too?',
-        createdAt: '12:15',
-      },
-      {
-        id: 3,
-        isCurrentUser: true,
-        body: 'Not really😔',
-        createdAt: '12:16',
-      },
-      {
-        id: 6,
-        isCurrentUser: true,
-        body: 'I have a problem with my neck🤒',
-        createdAt: '12:16',
-      },
-      {
-        id: 4,
-        isCurrentUser: false,
-        body: 'Oh I am so sorry, since when do you have that problem?',
-        createdAt: '14:13',
-      },
-      {
-        id: 5,
-        isCurrentUser: true,
-        body: 'Since this moring Doctor',
-        createdAt: '14:15',
-      },
-    ];
+
+    const { conversation, currentUser, messages } = this.state;
+    console.log(currentUser);
     return (
       <KeyboardAvoidingView
         style={styles.safeView}
@@ -97,8 +90,10 @@ export default class ChatRoomScreen extends PureComponent {
           <FlatList
             style={styles.editorMessagesContainer}
             data={messages}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={(message) => <ChatMessage message={message} />}
+            keyExtractor={(item) => item._id.toString()}
+            renderItem={(message) => (
+              <ChatMessage message={message} currentUser={currentUser} />
+            )}
           />
           <View style={styles.editor}>
             <View style={styles.editorControls}>
@@ -128,7 +123,7 @@ export default class ChatRoomScreen extends PureComponent {
 
               <View style={styles.inputContainer}>
                 <TextInput
-                  //   multiline
+                  multiline
                   placeholder="Enter message"
                   style={styles.input}
                   value={this.state.message}
@@ -236,3 +231,15 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    conversations: state.entities.conversations.list,
+  };
+};
+
+const mapDispatchToProps = {
+  loadConversations: () => loadConversations(),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomScreen);

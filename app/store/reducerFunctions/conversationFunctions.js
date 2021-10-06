@@ -10,10 +10,11 @@ export const addMessageToStore = (conversations, payload) => {
     return conversations.list.push(newConversation);
   }
 
-  conversations.list.forEach((conversation) => {
+  return conversations.list.forEach((conversation) => {
     if (conversation._id === message.conversationId) {
       conversation.messages.push(message);
       conversation.latestMessageText = message.text;
     }
+    return conversation;
   });
 };
