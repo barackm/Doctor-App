@@ -16,7 +16,6 @@ const Main = ({ isUserAuthenticated, loginUser }) => {
   const getToken = async () => {
     try {
       const token = await storage.getAuthToken();
-      console.log(setIsAuthenticated);
       setIsAuthenticated(token || isUserAuthenticated ? true : false);
       if (token) {
         const decoded = jwtDecode(token);

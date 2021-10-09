@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+// import socketClient from '../../services/socket';
 import * as actions from '../actions/api';
 
 const slice = createSlice({
@@ -13,6 +14,7 @@ const slice = createSlice({
     doctorsRequested: (doctors) => {
       doctors.loading = true;
       doctors.error = null;
+      // socketClient.socket.emit('new-message', 'the message');
     },
     doctorsLoaded: (doctors, action) => {
       doctors.loading = false;

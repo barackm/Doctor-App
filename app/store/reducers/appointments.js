@@ -47,6 +47,8 @@ const slice = createSlice({
     },
     appointmentCreated: (appointments, action) => {
       appointments.list = appointments.list.unshift(action.payload);
+      appointments.selectedDoctorAppointments =
+        appointments.selectedDoctorAppointments.push(action.payload);
       appointments.loading = false;
       appointments.error = null;
     },
@@ -76,14 +78,12 @@ const {
 export default slice.reducer;
 
 export const loadAppointments = () => async (dispatch) => {
-  const currentUser = jwtDecode(await storage.getAuthToken());
-
   dispatch(
     actions.apiCallBegan({
       onStart: appointmentsRequested.type,
       onError: appointmentsRequestFailed.type,
       onSuccess: appointmentsLoaded.type,
-      url: `${url}/${currentUser._id}`,
+      url,
       method: 'GET',
     }),
   );
@@ -95,12 +95,13 @@ export const createAppointment = (appointment) => (dispatch) => {
       onStart: appointmentsRequested.type,
       onError: appointmentsRequestFailed.type,
       onSuccess: appointmentCreated.type,
-      url: `${url}/doctors/${appointment.doctorId}`,
+      url: `${url}/${appointment.doctorId}`,
       method: 'POST',
       data: {
         time: appointment.time,
         date: appointment.date,
-        description: appointment.description,
+        // description: appointment.description,
+        // doctorId: appointment.doctorId,
       },
     }),
   );

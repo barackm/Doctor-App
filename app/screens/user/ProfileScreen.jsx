@@ -39,12 +39,10 @@ const ProfileScreen = ({ navigation, loginUser, logoutUser }) => {
       const token = await storage.getAuthToken();
       if (token) {
         const decoded = jwtDecode(token);
-        console.log(decoded);
         setCurrentUser(decoded);
         loginUser(decoded);
       }
     } catch (error) {
-      console.log(error);
       return null;
     }
   };
@@ -66,7 +64,9 @@ const ProfileScreen = ({ navigation, loginUser, logoutUser }) => {
               <Image
                 style={styles.image}
                 source={{
-                  uri: 'https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Tynan-Allan.jpeg',
+                  uri: currentUser.profileImage
+                    ? currentUser.profileImage
+                    : 'https://cdn.pixabay.com/photo/2017/12/18/03/01/black-avatar-3025348_960_720.png',
                 }}
               />
             </View>

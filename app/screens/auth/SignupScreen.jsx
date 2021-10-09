@@ -47,17 +47,14 @@ function SignupScreen({
     signupUser({
       email: values.email,
       password: values.password,
-      username: values.username,
+      name: values.username,
     });
   };
   if (isAuthenticated) {
     navigation.navigate('Signup');
   }
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboard}
-    >
+    <View style={styles.keyboard}>
       <Screen style={styles.container}>
         {error &&
           Toast.show({
@@ -128,7 +125,7 @@ function SignupScreen({
           </View>
         )}
       </Screen>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

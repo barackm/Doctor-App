@@ -1,7 +1,8 @@
 import * as actions from '../actions/api';
 import http from '../../services/http';
 import storage from '../../auth/storage';
-const baseURL = 'https://aqueous-gorge-50977.herokuapp.com/api';
+
+const baseURL = 'http://192.168.1.69:5000/api';
 
 const api =
   ({ dispatch }) =>
@@ -11,7 +12,6 @@ const api =
     const { onStart, onError, onSuccess, data, method, url } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
-
     try {
       const response = await http.request({
         baseURL,
@@ -19,6 +19,9 @@ const api =
         data,
         method,
       });
+
+      console.log(response.data);
+
       if (
         onSuccess &&
         (onSuccess === 'auth/userLoggedin' || onSuccess === 'auth/userSignedup')
@@ -32,7 +35,6 @@ const api =
           : dispatch(actions.apiCallSucceeded(response.data));
       }
     } catch (error) {
-      console.log();
       onError
         ? dispatch({
             type: onError,

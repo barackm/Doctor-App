@@ -135,7 +135,10 @@ const ChatListScreen = ({ navigation, conversations }) => {
           />
         )}
       />
-      <TouchableOpacity style={styles.newChat}>
+      <TouchableOpacity
+        style={styles.newChat}
+        onPress={() => navigation.navigate('Doctors')}
+      >
         <Entypo name="new-message" size={24} color={colors.white} />
       </TouchableOpacity>
     </Screen>

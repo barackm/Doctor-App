@@ -7,7 +7,6 @@ import capitalize from '../../utils/capitalize';
 
 const TopDoctorsListItem = ({ navigation, doctor }) => {
   const { name, lastName } = doctor;
-  console.log(doctor, 'doctor object');
   return (
     <TouchableOpacity
       style={styles.topDoctorsContainer}

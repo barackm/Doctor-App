@@ -60,11 +60,11 @@ const BookingCalenderScreen = ({
 
   useEffect(() => {
     if (!params) navigation.navigate('Doctors');
-    const d = doctors.find((d) => d.id === params.doctorId);
+    const d = doctors.find((d) => d._id === params);
     if (!d) navigation.navigate('Doctors');
     setDoctor(d);
     loadAppointments();
-    doctor && getDoctorAppointments(doctor._id);
+    getDoctorAppointments(params);
   }, []);
 
   const renderBackgroundColor = (item, colors) => {
@@ -93,6 +93,7 @@ const BookingCalenderScreen = ({
   };
 
   const handleSelectDates = (date) => {
+    // getDoctorAppointments(params);
     setSelectedDate(date);
     setSlots(
       slots.map((slot) => {
@@ -139,18 +140,31 @@ const BookingCalenderScreen = ({
   const getAfternoonSlots = (slots) => {
     return slots.filter((slot) => slot.time.includes('pm'));
   };
-  const handleSubmitAppointment = ({ description }) => {
+  const handleSubmitAppointment = ({ appointmentDescription }) => {
     if (!selectedDate) return Alert.alert('Please select first a date');
     if (!selectedSlot) return Alert.alert('Please select first a slot');
-
     if (selectedDate && selectedSlot) {
       const appointment = {
-        description,
+        description: appointmentDescription,
         time: selectedSlot.time,
         date: selectedDate.startDate.toString(),
+        doctorId: doctor._id,
       };
 
+      console.log('sending....');
       createAppointment(appointment);
+      setSelectedSlot(null);
+      setSelectedDate(null);
+
+      setSlots(
+        slots.map((slot) => {
+          slot.active = false;
+          slot.taken = false;
+          return slot;
+        }),
+      );
+
+      navigation.goBack();
     }
   };
 

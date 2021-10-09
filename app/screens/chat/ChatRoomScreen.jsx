@@ -25,7 +25,7 @@ class ChatRoomScreen extends PureComponent {
     height: 0,
     message: '',
     showEmojis: false,
-    conversation: {},
+    conversation: null,
     currentUser: null,
     messages: [],
   };
@@ -38,13 +38,14 @@ class ChatRoomScreen extends PureComponent {
       (conversation) => conversation._id === conversationId,
     );
     if (!conversation) {
-      navigation.goBack();
+      return;
+    } else {
+      this.getCurrentUser();
+      this.setState({
+        conversation: conversation,
+        messages: conversation.messages,
+      });
     }
-    this.getCurrentUser();
-    this.setState({
-      conversation: conversation,
-      messages: conversation.messages,
-    });
   }
 
   getCurrentUser = async () => {
@@ -75,11 +76,14 @@ class ChatRoomScreen extends PureComponent {
     this.setState({ showEmojis: false });
   };
 
+  handleSendMessage = () => {
+    const { message, conversation } = this.state;
+    console.log(message, conversation);
+  };
   render() {
     const messageAvailable = this.state.message.trim().length;
 
-    const { conversation, currentUser, messages } = this.state;
-    console.log(currentUser);
+    const { currentUser, messages } = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.safeView}
@@ -150,6 +154,7 @@ class ChatRoomScreen extends PureComponent {
                 </TouchableOpacity>
               )}
               <TouchableOpacity
+                onPress={this.handleSendMessage}
                 style={[
                   styles.sendMessage,
                   { display: messageAvailable ? 'flex' : 'none' },

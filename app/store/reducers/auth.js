@@ -90,7 +90,7 @@ export const signupUser = (user) => (dispatch) => {
       onStart: authRequested.type,
       onError: userSignupFailed.type,
       onSuccess: userSignedup.type,
-      url: '/doctors',
+      url: '/users',
       method: 'POST',
       data: user,
     }),

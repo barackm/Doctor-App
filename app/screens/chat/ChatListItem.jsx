@@ -7,7 +7,6 @@ export default function ChatListItem({ item, onPress, conversation }) {
   // const unreadMessagesCount = conversation.messages.map(
   //   (message) => message.read === false,
   // ).length;
-  // console.log(conversation);
   const unreadeMessagesCount = 90;
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

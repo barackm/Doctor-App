@@ -46,8 +46,11 @@ export default function DoctorProfileScreen(props) {
                   <FontAwesome name="star" size={20} color={colors.gold} />
                 </View>
               </View>
-              <TouchableOpacity style={styles.headerSubTitle}>
-                <Text style={styles.about}>SEE NATHAN ABOUT</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Chat', 'new')}
+                style={styles.headerSubTitle}
+              >
+                <Text style={styles.about}>SEND A MESSAGE</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -240,7 +243,9 @@ const styles = StyleSheet.create({
     color: colors.medium,
   },
   headerSubTitle: {
-    backgroundColor: colors.lightDark,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 5,
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
     ...style.text,
     fontWeight: 'bold',
     fontSize: 12,
-    color: colors.medium,
+    color: colors.white,
   },
   book: {
     flexDirection: 'row',
