@@ -2,11 +2,15 @@ import React from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import colors from '../../config/colors';
 import style from '../../config/style';
+import capitalize from '../../utils/capitalize';
+
 export default function ChatListItem({ item, onPress, conversation }) {
-  const { message, recepient } = item;
+  const { text, recipient, time } = item;
   // const unreadMessagesCount = conversation.messages.map(
   //   (message) => message.read === false,
   // ).length;
+  // check if the image url is a valid url
+
   const unreadeMessagesCount = 90;
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -14,7 +18,9 @@ export default function ChatListItem({ item, onPress, conversation }) {
         <Image
           source={{
             uri:
-              recepient.imageUrl ||
+              (recipient.profileImage &&
+                recipient.profileImage.match(/\.(jpeg|jpg|gif|png)$/) !=
+                  null) ||
               'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
           }}
           style={styles.image}
@@ -23,8 +29,10 @@ export default function ChatListItem({ item, onPress, conversation }) {
       </View>
       <View style={styles.chatDetails}>
         <View style={styles.header}>
-          <Text style={styles.user}>John lemon</Text>
-          <Text style={styles.timing}>2:30pm</Text>
+          <Text style={styles.user}>{`${capitalize(
+            recipient.name,
+          )} ${capitalize(recipient.lastName)}`}</Text>
+          <Text style={styles.timing}>{time}</Text>
         </View>
         <View style={styles.messageDetails}>
           <View
@@ -34,7 +42,7 @@ export default function ChatListItem({ item, onPress, conversation }) {
             }}
           >
             <Text style={styles.messageText} numberOfLines={2}>
-              {message}
+              {text}
             </Text>
           </View>
           {unreadeMessagesCount > 0 && (
@@ -79,6 +87,7 @@ const styles = StyleSheet.create({
   },
   messageDetails: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   messageText: {
     fontSize: 16,

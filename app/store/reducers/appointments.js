@@ -100,8 +100,7 @@ export const createAppointment = (appointment) => (dispatch) => {
       data: {
         time: appointment.time,
         date: appointment.date,
-        // description: appointment.description,
-        // doctorId: appointment.doctorId,
+        description: appointment.description,
       },
     }),
   );

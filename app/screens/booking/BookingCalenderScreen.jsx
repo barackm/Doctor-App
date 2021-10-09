@@ -151,7 +151,6 @@ const BookingCalenderScreen = ({
         doctorId: doctor._id,
       };
 
-      console.log('sending....');
       createAppointment(appointment);
       setSelectedSlot(null);
       setSelectedDate(null);

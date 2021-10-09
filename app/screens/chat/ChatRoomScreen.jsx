@@ -18,32 +18,47 @@ import Screen from '../../components/Screen';
 import ChatMessage from './ChatMessage';
 import storage from '../../auth/storage';
 import jwtDecode from 'jwt-decode';
-import { loadConversations } from '../../store/reducers/conversations';
+import conversations, {
+  loadConversations,
+  sendMessage,
+} from '../../store/reducers/conversations';
 
 class ChatRoomScreen extends PureComponent {
   state = {
     height: 0,
     message: '',
     showEmojis: false,
-    conversation: null,
+    conversationId: 'new',
     currentUser: null,
+    conversation: null,
     messages: [],
   };
 
   componentDidMount() {
     const { route, conversations, loadConversations } = this.props;
     loadConversations();
-    const conversationId = route.params;
-    const conversation = conversations.find(
-      (conversation) => conversation._id === conversationId,
-    );
+    let conversationId = route.params;
+    let conversation =
+      conversations.find(
+        (conversation) => conversation._id === conversationId,
+      ) || null;
     if (!conversation) {
-      return;
+      conversation = conversations.find(
+        (conversation) =>
+          conversation.participents[0]._id === conversationId ||
+          conversation.participents[1]._id === conversationId,
+      );
+    }
+
+    if (!conversation) {
+      this.setState({ conversationId: 'new' });
     } else {
       this.getCurrentUser();
       this.setState({
-        conversation: conversation,
+        conversationId: conversation._id,
         messages: conversation.messages,
+        conversation,
+        conversationId: conversation._id,
       });
     }
   }
@@ -77,9 +92,21 @@ class ChatRoomScreen extends PureComponent {
   };
 
   handleSendMessage = () => {
-    const { message, conversation } = this.state;
-    console.log(message, conversation);
+    const { message, conversationId, conversation, currentUser } = this.state;
+
+    let recipientId = '';
+    if (conversationId === 'new') {
+      recipientId = this.props.route.params;
+    } else {
+      recipientId =
+        conversation.participents[0]._id === currentUser._id
+          ? conversation.participents[1]._id
+          : conversation.participents[0]._id;
+    }
+    this.props.sendMessage(message, conversationId, recipientId);
+    this.setState({ message: '' });
   };
+
   render() {
     const messageAvailable = this.state.message.trim().length;
 
@@ -245,6 +272,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   loadConversations: () => loadConversations(),
+  sendMessage: (text, conversationId, recipientId) =>
+    sendMessage(text, conversationId, recipientId),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomScreen);

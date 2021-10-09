@@ -20,8 +20,6 @@ const api =
         method,
       });
 
-      console.log(response.data);
-
       if (
         onSuccess &&
         (onSuccess === 'auth/userLoggedin' || onSuccess === 'auth/userSignedup')

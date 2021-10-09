@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import colors from '../../config/colors';
+import moment from 'moment';
 
 export default function ChatMessage({ message, currentUser }) {
   const { item } = message;
@@ -27,7 +28,7 @@ export default function ChatMessage({ message, currentUser }) {
     >
       {isCurrentUser && (
         <View style={styles.dateContainer}>
-          <Text>{createdAt}</Text>
+          <Text>{moment(item.createdAt).format('HH:mm')}</Text>
         </View>
       )}
 

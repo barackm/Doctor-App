@@ -3,6 +3,8 @@ import * as actions from '../actions/api';
 import { addMessageToStore } from '../reducerFunctions/conversationFunctions';
 
 const url = 'conversations';
+const messagesURL = 'messages';
+
 const defaultConversations = [
   {
     _id: 1,
@@ -101,7 +103,7 @@ const defaultConversations = [
 const slice = createSlice({
   name: 'conversations',
   initialState: {
-    list: defaultConversations,
+    list: [],
     loading: false,
     error: null,
   },
@@ -136,13 +138,33 @@ export const {
 export default slice.reducer;
 
 export const loadConversations = () => (dispatch) => {
-  actions.apiCallBegan({
-    url,
-    method: 'GET',
-    onStart: conversationsRequest.type,
-    onSuccess: conversationsReceived.type,
-    onError: conversationRequestFailed.type,
-  });
+  dispatch(
+    actions.apiCallBegan({
+      url,
+      method: 'GET',
+      onStart: conversationsRequest.type,
+      onSuccess: conversationsReceived.type,
+      onError: conversationRequestFailed.type,
+    }),
+  );
 };
+
+export const sendMessage =
+  (text, conversationId, recipientId) => (dispatch) => {
+    dispatch(
+      actions.apiCallBegan({
+        url: messagesURL,
+        method: 'POST',
+        data: {
+          text,
+          conversationId,
+          recipientId,
+        },
+        onStart: conversationsRequest.type,
+        onSuccess: newMessageAdded.type,
+        onError: conversationRequestFailed.type,
+      }),
+    );
+  };
 
 export const unreadMessagesCount = (conversations) => {};

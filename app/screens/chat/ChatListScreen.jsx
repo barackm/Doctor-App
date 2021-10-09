@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import moment from 'moment';
+
 import Screen from '../../components/Screen';
 import style from '../../config/style';
 import colors from '../../config/colors';
@@ -17,8 +19,9 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../store/reducers/auth';
 import jwtDecode from 'jwt-decode';
 import storage from '../../auth/storage';
+import { loadConversations } from '../../store/reducers/conversations';
 
-const ChatListScreen = ({ navigation, conversations }) => {
+const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
   const messages = [
     {
       id: 1,
@@ -98,7 +101,8 @@ const ChatListScreen = ({ navigation, conversations }) => {
   const [currentUser, setCurrentUser] = React.useState('');
   useEffect(() => {
     getAuthToken();
-  });
+    loadConversations();
+  }, []);
   const getAuthToken = async () => {
     const token = await storage.getAuthToken();
     setCurrentUser(jwtDecode(token));
@@ -125,9 +129,10 @@ const ChatListScreen = ({ navigation, conversations }) => {
           <ChatListItem
             onPress={() => navigation.navigate('Chat', item.item._id)}
             item={{
-              message: item.item.latestMessageText,
+              text: item.item.lastMessage.text,
+              time: moment(item.item.lastMessage.createdAt).format('HH:mm'),
               conversation: item,
-              recepient:
+              recipient:
                 item.item.participents[0]._id === currentUser._id
                   ? item.item.participents[1]
                   : item.item.participents[0],
@@ -222,5 +227,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   loginUser: () => loginUser(),
+  loadConversations: () => loadConversations(),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ChatListScreen);

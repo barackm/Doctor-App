@@ -47,7 +47,7 @@ export default function DoctorProfileScreen(props) {
                 </View>
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Chat', 'new')}
+                onPress={() => navigation.navigate('Chat', _id)}
                 style={styles.headerSubTitle}
               >
                 <Text style={styles.about}>SEND A MESSAGE</Text>
