@@ -1,11 +1,14 @@
 import axios from 'axios';
-import storage from '../auth/storage';
+// import storage from '../auth/storage';
 
-const getAuthToken = async () => {
-  const token = await storage.getAuthToken();
-  axios.defaults.headers.common['x-auth-token'] = token;
-};
-getAuthToken();
+// const getAuthToken = async () => {
+//   const token = await storage.getAuthToken();
+//   console.log('token', token);
+//   if (token) {
+//     axios.defaults.headers.common['x-auth-token'] = token;
+//   }
+// };
+// getAuthToken();
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
     error.response &&
@@ -13,7 +16,7 @@ axios.interceptors.response.use(null, (error) => {
     error.response.status < 500;
 
   if (!expectedError) {
-    console.log('An unexpected error occurred.');
+    console.log('An unexpected error occurred.', error.response);
   }
   return Promise.reject(error);
 });

@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import colors from '../../config/colors';
 import style from '../../config/style';
 import capitalize from '../../utils/capitalize';
+import renderProfilePicture from '../../utils/renderProfileImageUrl';
 
 const TopDoctorsListItem = ({ navigation, doctor }) => {
   const { name, lastName } = doctor;
@@ -16,7 +17,7 @@ const TopDoctorsListItem = ({ navigation, doctor }) => {
         <Image
           style={styles.topDoctorImage}
           source={{
-            uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+            uri: renderProfilePicture(doctor.profilePicture, doctor),
           }}
         />
       </View>

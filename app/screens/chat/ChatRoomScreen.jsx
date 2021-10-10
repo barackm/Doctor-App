@@ -35,32 +35,10 @@ class ChatRoomScreen extends PureComponent {
   };
 
   componentDidMount() {
-    const { route, conversations, loadConversations } = this.props;
+    const { loadConversations, conversations } = this.props;
+    this.getCurrentUser();
     loadConversations();
-    let conversationId = route.params;
-    let conversation =
-      conversations.find(
-        (conversation) => conversation._id === conversationId,
-      ) || null;
-    if (!conversation) {
-      conversation = conversations.find(
-        (conversation) =>
-          conversation.participents[0]._id === conversationId ||
-          conversation.participents[1]._id === conversationId,
-      );
-    }
-
-    if (!conversation) {
-      this.setState({ conversationId: 'new' });
-    } else {
-      this.getCurrentUser();
-      this.setState({
-        conversationId: conversation._id,
-        messages: conversation.messages,
-        conversation,
-        conversationId: conversation._id,
-      });
-    }
+    this.getConversation(conversations);
   }
 
   getCurrentUser = async () => {
@@ -92,25 +70,62 @@ class ChatRoomScreen extends PureComponent {
   };
 
   handleSendMessage = () => {
-    const { message, conversationId, conversation, currentUser } = this.state;
+    const { message, conversationId, conversation } = this.state;
+    const { sendMessage, route } = this.props;
+    let recipientId;
+    storage.getAuthToken().then((token) => {
+      const currentUser = jwtDecode(token);
+      if (conversationId === 'new') {
+        recipientId = route.params;
+      } else {
+        recipientId =
+          conversation.participents[0]._id === currentUser._id
+            ? conversation.participents[1]._id
+            : conversation.participents[0]._id;
+      }
+      sendMessage(message, conversationId, recipientId);
+      this.setState({ message: '' });
+    });
+  };
 
-    let recipientId = '';
-    if (conversationId === 'new') {
-      recipientId = this.props.route.params;
-    } else {
-      recipientId =
-        conversation.participents[0]._id === currentUser._id
-          ? conversation.participents[1]._id
-          : conversation.participents[0]._id;
-    }
-    this.props.sendMessage(message, conversationId, recipientId);
-    this.setState({ message: '' });
+  getConversation = (conversations) => {
+    const { route } = this.props;
+    let conversation;
+    storage.getAuthToken().then((token) => {
+      const currentUser = jwtDecode(token);
+      const conversationId = route.params;
+      conversation =
+        conversations.find(
+          (conversation) => conversation._id === conversationId,
+        ) || null;
+
+      if (!conversation) {
+        conversation = conversations.find(
+          (conversation) =>
+            (conversation.participents[0]._id === currentUser._id &&
+              conversation.participents[1]._id === route.params) ||
+            (conversation.participents[1]._id === currentUser._id &&
+              conversation.participents[0]._id === route.params),
+        );
+      }
+      if (conversation) {
+        this.setState({
+          conversationId: conversation._id,
+          messages: conversation.messages,
+          conversation,
+          conversationId: conversation._id,
+        });
+      } else {
+        this.setState({ conversationId: 'new' });
+      }
+    });
   };
 
   render() {
     const messageAvailable = this.state.message.trim().length;
-
+    this.getConversation(this.props.conversations);
     const { currentUser, messages } = this.state;
+
     return (
       <KeyboardAvoidingView
         style={styles.safeView}

@@ -11,6 +11,7 @@ const slice = createSlice({
     currentUser: null,
     isAuthenticated: false,
     error: null,
+    toke: null,
   },
   reducers: {
     authRequested: (auth) => {
@@ -19,7 +20,8 @@ const slice = createSlice({
     },
     userLoggedin: (auth, action) => {
       auth.loading = false;
-      auth.currentUser = action.payload;
+      auth.currentUser = action.payload.data;
+      auth.token = action.payload.token;
       auth.isAuthenticated = true;
       Toast.show({
         type: 'success',
@@ -44,7 +46,8 @@ const slice = createSlice({
     },
     userSignedup: (auth, action) => {
       auth.loading = false;
-      auth.currentUser = action.payload;
+      auth.currentUser = action.payload.data;
+      auth.token = action.payload.token;
       auth.isAuthenticated = true;
       Toast.show({
         type: 'success',
@@ -98,11 +101,12 @@ export const signupUser = (user) => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-  storage.removeAuthToken();
-  dispatch({ type: userLoggedOut.type });
-  Toast.show({
-    type: 'success',
-    text1: 'Hello',
-    text2: 'Logged out successfully  👋',
+  storage.removeAuthToken().then(() => {
+    dispatch({ type: userLoggedOut.type });
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'Logged out successfully  👋',
+    });
   });
 };

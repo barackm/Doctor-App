@@ -27,6 +27,7 @@ import { loginUserSuccess } from '../../store/actions/actionCreators';
 import storage from '../../auth/storage';
 import Preloader from '../../components/common/Preloader';
 import { logoutUser } from '../../store/reducers/auth';
+import renderProfilePicture from '../../utils/renderProfileImageUrl';
 
 const ProfileScreen = ({ navigation, loginUser, logoutUser }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -49,8 +50,8 @@ const ProfileScreen = ({ navigation, loginUser, logoutUser }) => {
   const { name, lastName } = currentUser || {};
   const logout = () => {
     logoutUser();
-    navigation.navigate('Profile');
   };
+
   return (
     <ScrollView style={styles.mainView}>
       {!currentUser ? (
@@ -64,9 +65,10 @@ const ProfileScreen = ({ navigation, loginUser, logoutUser }) => {
               <Image
                 style={styles.image}
                 source={{
-                  uri: currentUser.profileImage
-                    ? currentUser.profileImage
-                    : 'https://cdn.pixabay.com/photo/2017/12/18/03/01/black-avatar-3025348_960_720.png',
+                  uri: renderProfilePicture(
+                    currentUser.profileImage,
+                    currentUser,
+                  ),
                 }}
               />
             </View>

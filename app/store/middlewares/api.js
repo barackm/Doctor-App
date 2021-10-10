@@ -1,6 +1,7 @@
 import * as actions from '../actions/api';
 import http from '../../services/http';
 import storage from '../../auth/storage';
+import * as SecureStore from 'expo-secure-store';
 
 const baseURL = 'http://192.168.1.69:5000/api';
 
@@ -9,7 +10,8 @@ const api =
   (next) =>
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
-    const { onStart, onError, onSuccess, data, method, url } = action.payload;
+    const { onStart, onError, onSuccess, data, method, url, token } =
+      action.payload;
 
     if (onStart) dispatch({ type: onStart });
     try {
@@ -18,15 +20,22 @@ const api =
         url,
         data,
         method,
+        headers: {
+          'x-auth-token':
+            token || (await SecureStore.getItemAsync('authToken')),
+        },
       });
 
       if (
         onSuccess &&
         (onSuccess === 'auth/userLoggedin' || onSuccess === 'auth/userSignedup')
       ) {
-        dispatch({ type: onSuccess, payload: response.data });
         const authToken = response.headers['x-auth-token'];
-        await storage.setAuthToken(authToken);
+        setAuthToken(authToken);
+        dispatch({
+          type: onSuccess,
+          payload: { data: response.data, token: authToken },
+        });
       } else {
         onSuccess
           ? dispatch({ type: onSuccess, payload: response.data })
@@ -36,10 +45,19 @@ const api =
       onError
         ? dispatch({
             type: onError,
-            payload: error.response.data || error.message,
+            payload:
+              (error.response && error.response.data) || 'There was an error',
           })
-        : dispatch(actions.apiCallFailed(error.response.data || error.message));
+        : dispatch(
+            actions.apiCallFailed(
+              (error.response && error.response.data) || 'There was an error',
+            ),
+          );
     }
   };
+
+const setAuthToken = async (token) => {
+  await SecureStore.setItemAsync('authToken', token);
+};
 
 export default api;

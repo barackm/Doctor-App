@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import colors from '../../config/colors';
 import style from '../../config/style';
 import capitalize from '../../utils/capitalize';
+import renderProfilePicture from '../../utils/renderProfileImageUrl';
 
 export default function ChatListItem({ item, onPress, conversation }) {
   const { text, recipient, time } = item;
@@ -17,11 +18,7 @@ export default function ChatListItem({ item, onPress, conversation }) {
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri:
-              (recipient.profileImage &&
-                recipient.profileImage.match(/\.(jpeg|jpg|gif|png)$/) !=
-                  null) ||
-              'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+            uri: renderProfilePicture(recipient.profilePicture, recipient),
           }}
           style={styles.image}
         />

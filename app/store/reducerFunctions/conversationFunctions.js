@@ -1,21 +1,12 @@
 export const addMessageToStore = (conversations, payload) => {
-  console.log('addMessageToStore', payload);
-  // const { sender, message } = payload;
-  // if (sender !== null) {
-  //   const newConversation = {
-  //     _id: message.conversationId,
-  //     messages: [message],
-  //     participants: [sender, message.recipient],
-  //     latestMessageText: message.text,
-  //   };
+  // const { conversationId, message, newConversation } = payload;
+  // if (conversationId === 'new') {
   //   return conversations.list.push(newConversation);
+  // } else {
+  //   const conversation = conversations.list.find(
+  //     (conversation) => conversation._id === conversationId,
+  //   );
+  //   conversation.messages.push(message);
+  //   return conversations;
   // }
-
-  // return conversations.list.forEach((conversation) => {
-  //   if (conversation._id === message.conversationId) {
-  //     conversation.messages.push(message);
-  //     conversation.latestMessageText = message.text;
-  //   }
-  //   return conversation;
-  // });
 };
