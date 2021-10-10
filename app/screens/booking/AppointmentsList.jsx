@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { loadMyAppointments } from '../../store/reducers/appointments';
 import Screen from '../../components/Screen';
 
-const AppointmentsList = ({ loadAppointments, appointments }) => {
+const AppointmentsList = ({ loadAppointments, appointments, loading }) => {
   useEffect(() => {
     loadAppointments();
   }, []);
@@ -17,6 +17,8 @@ const AppointmentsList = ({ loadAppointments, appointments }) => {
     <Screen style={styles.container}>
       <FlatList
         data={appointments}
+        onRefresh={loadAppointments}
+        refreshing={loading}
         keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => <AppointmentItem appointment={item} />}
         ItemSeparatorComponent={() => <ItemSeparator />}
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     appointments: state.entities.appointments.myAppointments,
+    loading: state.entities.appointments.loading,
   };
 };
 const mapDispatchToProps = {
