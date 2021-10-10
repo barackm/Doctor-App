@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreen from '../screens/user/ProfileScreen';
 import AppointmentsScreen from '../screens/booking/AppointmentsScreen';
 import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
-import TestHistoryScreen from '../screens/TestHistoryScreen';
+import TestHistoryScreen from '../screens/tests/TestHistoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import EditProfileScreen from '../screens/user/EditProfileScreen';
 

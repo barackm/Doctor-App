@@ -28,4 +28,14 @@ socket.on('new-message', async (conversation) => {
   }
 });
 
+socket.on('new-test', (test) => {
+  storage.getAuthToken().then((token) => {
+    const user = jwtDecode(token);
+    if (test.patient._id === user._id) {
+      console.log('new test');
+      store.dispatch(actions.testAdded(test));
+    }
+  });
+});
+
 export default socket;

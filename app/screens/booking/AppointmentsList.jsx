@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-Screen;
 import colors from '../../config/colors';
 import AppointmentItem from './AppointmentItem';
 import ItemSeparator from '../../components/common/ItemSeparator';

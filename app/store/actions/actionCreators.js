@@ -1,4 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 
-export const conversationAdded = createAction('conversationAdded');
-export const conversationUpdated = createAction('conversationUpdated');
+export const conversationAdded = createAction(
+  'conversations/conversationAdded',
+);
+export const conversationUpdated = createAction(
+  'conversations/conversationUpdated',
+);
+export const testAdded = createAction('tests/testAdded');
