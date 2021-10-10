@@ -137,6 +137,11 @@ class ChatRoomScreen extends PureComponent {
             style={styles.editorMessagesContainer}
             data={messages}
             keyExtractor={(item) => item._id.toString()}
+            // keep scroll position at the bottom
+            ref="flatList"
+            onContentSizeChange={() => {
+              setTimeout(() => this.refs.flatList.scrollToEnd(), 0);
+            }}
             renderItem={(message) => (
               <ChatMessage message={message} currentUser={currentUser} />
             )}
