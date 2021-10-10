@@ -7,12 +7,9 @@ import * as actions from '../store/actions/actionCreators';
 const apiEndpoint = 'http://192.168.1.69:5000';
 
 const socket = io(apiEndpoint);
-socket.on('connect', () => {
-  console.log('connected to server...');
-});
+socket.on('connect', () => {});
 
 socket.on('new-message', async (conversation) => {
-  console.log(conversation);
   const conversations = store.getState().conversations.list;
   const courrentUser = jwtDecode(await storage.getAuthToken());
   const conversationIndex = conversations.findIndex(

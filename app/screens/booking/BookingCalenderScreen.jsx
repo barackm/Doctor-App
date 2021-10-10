@@ -26,6 +26,7 @@ import {
   createAppointment,
   getDoctorAppointments,
   loadAppointments,
+  removeAppointment,
 } from '../../store/reducers/appointments';
 
 const validationSchema = Yup.object().shape({
@@ -93,16 +94,17 @@ const BookingCalenderScreen = ({
   };
 
   const handleSelectDates = (date) => {
-    // getDoctorAppointments(params);
     setSelectedDate(date);
+    getDoctorAppointments(params);
     setSlots(
       slots.map((slot) => {
         slot.taken = false;
         return slot;
       }),
     );
+
     doctorAppointments.forEach((appointment) => {
-      if (appointment.date === date.startDate.toString()) {
+      if (appointment.date === JSON.stringify(date.startDate)) {
         const index = slots.findIndex((s) => s.time === appointment.time);
         const newSlots = [...slots];
         newSlots[index].taken = true;
@@ -147,7 +149,7 @@ const BookingCalenderScreen = ({
       const appointment = {
         description: appointmentDescription,
         time: selectedSlot.time,
-        date: selectedDate.startDate.toString(),
+        date: JSON.stringify(selectedDate.startDate),
         doctorId: doctor._id,
       };
 
@@ -232,6 +234,7 @@ const BookingCalenderScreen = ({
                       onChange={(range) => handleSelectDates(range)}
                       startDate={startDate || new Date(2018, 3, 30)}
                       numberOfMonths={1}
+                      monthFormat={'MMM d, yyyy'}
                       theme={{
                         activeDayColor: {},
                         monthTitleTextStyle: {

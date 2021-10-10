@@ -3,9 +3,9 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../config/colors';
 
-export default function DeleteItem() {
+export default function DeleteItem({ onPress }) {
   return (
-    <TouchableOpacity style={styles.appointmentDelete}>
+    <TouchableOpacity onPress={onPress} style={styles.appointmentDelete}>
       <MaterialCommunityIcons
         name="trash-can-outline"
         color={colors.white}
