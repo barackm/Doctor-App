@@ -17,7 +17,6 @@ import capitalize from '../../utils/capitalize';
 export default function DoctorProfileScreen(props) {
   const { navigation, route } = props;
   const { _id, name, lastName, phoneNumber } = route.params;
-
   return (
     <ScrollView style={styles.mainView}>
       <Screen style={styles.container}>
@@ -47,7 +46,14 @@ export default function DoctorProfileScreen(props) {
                 </View>
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Chat', _id)}
+                onPress={() =>
+                  navigation.navigate('Chat', {
+                    id: _id,
+                    name,
+                    image:
+                      'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                  })
+                }
                 style={styles.headerSubTitle}
               >
                 <Text style={styles.about}>SEND A MESSAGE</Text>

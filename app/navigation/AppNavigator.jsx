@@ -10,6 +10,8 @@ import ChatNavigator from './ChatNavigator';
 import DoctorNavigator from './DoctorsNavigator';
 import ProfileNavigator from './ProfileNavigator';
 
+window.hiddenTabBar = true;
+
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
   return (
@@ -18,9 +20,12 @@ const AppNavigator = () => {
         activeBackgroundColor: colors.white,
         showLabel: false,
       }}
+      screenOptions={{
+        tabBarVisible: window.hiddenTabBar,
+      }}
     >
       <Tab.Screen
-        name='Messages'
+        name="Messages"
         component={ChatNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -36,7 +41,7 @@ const AppNavigator = () => {
               ]}
             >
               <Ionicons
-                name='chatbubbles-outline'
+                name="chatbubbles-outline"
                 size={24}
                 color={focused ? colors.white : colors.primary}
               />
@@ -46,7 +51,7 @@ const AppNavigator = () => {
         }}
       />
       <Tab.Screen
-        name='Doctors'
+        name="Doctors"
         component={DoctorNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -62,7 +67,7 @@ const AppNavigator = () => {
               ]}
             >
               <FontAwesome
-                name='stethoscope'
+                name="stethoscope"
                 size={24}
                 color={focused ? colors.white : colors.primary}
               />
@@ -72,7 +77,7 @@ const AppNavigator = () => {
         }}
       />
       <Tab.Screen
-        name='Menu'
+        name="Menu"
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -88,7 +93,7 @@ const AppNavigator = () => {
               ]}
             >
               <Entypo
-                name='user'
+                name="user"
                 size={24}
                 color={focused ? colors.white : colors.primary}
               />

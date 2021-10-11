@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import jwtDecode from 'jwt-decode';
 import socket from '../../services/socket';
 import * as actions from '../actions/api';
 
@@ -48,7 +49,30 @@ const slice = createSlice({
       conversations.error = null;
     },
     conversationAdded: (conversations, action) => {
-      conversations.list.push(action.payload);
+      const { conversation, currentUser } = action.payload;
+      const convList = [...conversations.list];
+      const index = convList.findIndex((conv) => conv._id === conversation._id);
+      if (index !== -1) {
+        convList[index] = conversation;
+      } else {
+        const index = convList.findIndex((conv) =>
+          conv.participants.find(
+            (participant) => participant._id === currentUser._id,
+          ),
+        );
+        if (index !== -1) {
+          convList[index] = conversation;
+        }
+      }
+      conversations.list = convList.sort((a, b) => {
+        if (a.lastMessage.createdAt > b.lastMessage.createdAt) {
+          return -1;
+        }
+        if (a.lastMessage.createdAt < b.lastMessage.createdAt) {
+          return 1;
+        }
+        return 0;
+      });
       conversations.loading = false;
       conversations.error = null;
     },
@@ -69,8 +93,6 @@ const slice = createSlice({
         }
         return 0;
       });
-      conversations.loading = false;
-      conversations.error = null;
     },
     conversationRequestFailed: (conversations, action) => {
       conversations.error = action.payload;
@@ -116,5 +138,3 @@ export const sendMessage =
       }),
     );
   };
-
-export const unreadMessagesCount = (conversations) => {};

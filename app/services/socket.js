@@ -1,31 +1,22 @@
 import jwtDecode from 'jwt-decode';
 import io from 'socket.io-client';
+
 import storage from '../auth/storage';
-import store from '../store/configureStore';
 import * as actions from '../store/actions/actionCreators';
+import store from '../store/configureStore';
 
 const apiEndpoint = 'http://192.168.1.69:5000';
 
 const socket = io(apiEndpoint);
+
 socket.on('connect', () => {});
 
-socket.on('new-message', async (conversation) => {
-  const conversations = store.getState().conversations.list;
-  const courrentUser = jwtDecode(await storage.getAuthToken());
-  const conversationIndex = conversations.findIndex(
-    (c) => c._id === conversation._id,
-  );
+socket.on('new-message', (conversation) => {
+  storage.getAuthToken().then((token) => {
+    const currentUser = jwtDecode(token);
 
-  if (conversationIndex === -1) {
-    const isCurrentUser = conversation.participants.find(
-      (p) => p._id === courrentUser._id,
-    );
-    if (isCurrentUser) {
-      store.dispatch(actions.conversationAdded(conversation));
-    }
-  } else {
-    store.dispatch(actions.conversationUpdated(conversation));
-  }
+    store.dispatch(actions.conversationAdded({ conversation, currentUser }));
+  });
 });
 
 socket.on('new-test', (test) => {

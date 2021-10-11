@@ -36,6 +36,7 @@ class ChatRoomScreen extends PureComponent {
 
   componentDidMount() {
     const { loadConversations, conversations } = this.props;
+    window.hiddenTabBar = false;
     this.getCurrentUser();
     loadConversations();
     this.getConversation(conversations);
@@ -90,10 +91,11 @@ class ChatRoomScreen extends PureComponent {
 
   getConversation = (conversations) => {
     const { route } = this.props;
+    const { id } = route.params;
     let conversation;
     storage.getAuthToken().then((token) => {
       const currentUser = jwtDecode(token);
-      const conversationId = route.params;
+      const conversationId = id;
       conversation =
         conversations.find(
           (conversation) => conversation._id === conversationId,
@@ -103,9 +105,9 @@ class ChatRoomScreen extends PureComponent {
         conversation = conversations.find(
           (conversation) =>
             (conversation.participents[0]._id === currentUser._id &&
-              conversation.participents[1]._id === route.params) ||
+              conversation.participents[1]._id === id) ||
             (conversation.participents[1]._id === currentUser._id &&
-              conversation.participents[0]._id === route.params),
+              conversation.participents[0]._id === id),
         );
       }
       if (conversation) {
@@ -125,7 +127,6 @@ class ChatRoomScreen extends PureComponent {
     const messageAvailable = this.state.message.trim().length;
     this.getConversation(this.props.conversations);
     const { currentUser, messages } = this.state;
-
     return (
       <KeyboardAvoidingView
         style={styles.safeView}

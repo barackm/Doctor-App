@@ -2,6 +2,8 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ChatRoomScreen from '../screens/chat/ChatRoomScreen';
 import ChatListScreen from '../screens/chat/ChatListScreen';
+import { Image } from 'react-native';
+
 const Stack = createStackNavigator();
 
 const ChatNavigator = () => {
@@ -12,7 +14,20 @@ const ChatNavigator = () => {
         component={ChatListScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Chat" component={ChatRoomScreen} />
+      <Stack.Screen
+        name="Chat"
+        options={({ route }) => ({
+          title: route.params.name,
+          headerRight: () => (
+            <Image
+              source={{ uri: route.params.imageUrl }}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+            />
+          ),
+          headerBackTitle: null,
+        })}
+        component={ChatRoomScreen}
+      />
     </Stack.Navigator>
   );
 };

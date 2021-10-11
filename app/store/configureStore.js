@@ -9,4 +9,5 @@ const store = configureStore({
     getDefaultMiddleware().concat(api, error),
 });
 
+window.store = store;
 export default store;

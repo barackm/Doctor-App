@@ -56,7 +56,16 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
         keyExtractor={(item) => item._id.toString()}
         renderItem={(item) => (
           <ChatListItem
-            onPress={() => navigation.navigate('Chat', item.item._id)}
+            onPress={() =>
+              navigation.navigate('Chat', {
+                id: item.item._id,
+                name:
+                  item.item.participents[0]._id === currentUser._id
+                    ? item.item.participents[1].name
+                    : item.item.participents[0].name,
+                image: 'https://i.pravatar.cc/300',
+              })
+            }
             item={{
               text: item.item.lastMessage.text,
               time: moment(item.item.lastMessage.createdAt).format('HH:mm'),

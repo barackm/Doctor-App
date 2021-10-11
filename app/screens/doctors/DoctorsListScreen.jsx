@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
@@ -50,6 +51,12 @@ class DoctorsListScreen extends React.Component {
               horizontal={true}
               style={styles.categories}
               showsHorizontalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={() => this.props.loadDoctors()}
+                />
+              }
             >
               {doctors.map((doctor) => (
                 <TopDoctorsListItem

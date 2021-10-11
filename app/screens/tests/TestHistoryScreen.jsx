@@ -22,6 +22,26 @@ const TestHistoryScreen = ({ tests, loadTests, loading, removeTest }) => {
   useEffect(() => {
     loadTests();
   }, []);
+  const handleSendEmergency = () => {
+    Alert.alert(
+      'Send Emergency',
+      'Are you sure you want to notify an emergency to the Hospital? We will send the last uploaded test with your location to the Hospital so they can assist you.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Send',
+          onPress: () => {
+            console.log('send emergency');
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
+
   const handleRemoveTest = (t) => {
     Alert.alert(
       'Are you sure you want to delete this test?',
@@ -60,7 +80,7 @@ const TestHistoryScreen = ({ tests, loadTests, loading, removeTest }) => {
         )}
       />
       <TouchableOpacity
-        onPress={() => console.log('emergency...')}
+        onPress={handleSendEmergency}
         style={styles.emergencyBtnContainer}
       >
         <MaterialIcons name="report-problem" size={30} color={colors.white} />

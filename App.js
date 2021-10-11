@@ -6,6 +6,7 @@ import store from './app/store/configureStore';
 import Main from './app/Main';
 import './app/services/socket';
 
+window.store = store;
 export default function App() {
   return (
     <Provider store={store}>

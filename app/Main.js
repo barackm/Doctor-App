@@ -19,6 +19,7 @@ const Main = ({ isUserAuthenticated, loginUser, socket }) => {
       setIsAuthenticated(token || isUserAuthenticated ? true : false);
       if (token) {
         const decoded = jwtDecode(token);
+        window.token = token;
         loginUser(decoded);
       }
     } catch (error) {
