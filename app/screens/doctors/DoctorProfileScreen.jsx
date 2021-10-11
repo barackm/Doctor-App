@@ -14,9 +14,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import capitalize from '../../utils/capitalize';
 
-export default function DoctorProfileScreen(props) {
-  const { navigation, route } = props;
+const DoctorProfileScreen = (props) => {
+  const { navigation, route, currentUser } = props;
   const { _id, name, lastName, phoneNumber } = route.params;
+  console.log(currentUser);
   return (
     <ScrollView style={styles.mainView}>
       <Screen style={styles.container}>
@@ -47,12 +48,17 @@ export default function DoctorProfileScreen(props) {
               </View>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('Chat', {
-                    id: _id,
-                    name,
-                    image:
-                      'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                  })
+                  currentUser.status === 'Pending' ||
+                  currentUser.status === 'Inactive'
+                    ? alert(
+                        'You need to be approved by an admin to chat with Doctor. Kindly contact the Hospital for further explainations',
+                      )
+                    : navigation.navigate('Chat', {
+                        id: _id,
+                        name,
+                        image:
+                          'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                      })
                 }
                 style={styles.headerSubTitle}
               >
@@ -106,7 +112,14 @@ export default function DoctorProfileScreen(props) {
             <View style={styles.book}>
               <TouchableOpacity
                 style={styles.bookBtn}
-                onPress={() => navigation.navigate('Booking', _id)}
+                onPress={() =>
+                  currentUser.status === 'Pending' ||
+                  currentUser.status === 'Inactive'
+                    ? alert(
+                        'You need to be approved by an admin to book an appointment with a doctor. Kindly contact the Hospital for further explainations.',
+                      )
+                    : navigation.navigate('Booking', _id)
+                }
               >
                 <MaterialCommunityIcons
                   name="calendar-month-outline"
@@ -176,7 +189,7 @@ export default function DoctorProfileScreen(props) {
       </Screen>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   mainView: {
@@ -384,3 +397,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
+
+export default DoctorProfileScreen;

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Alert } from 'react-native';
-import Toast from 'react-native-toast-message';
 
 import * as actions from '../actions/api';
 
@@ -21,6 +20,7 @@ const slice = createSlice({
       location.error = null;
       location.loading = false;
       location.mergency = action.payload;
+
       Alert.alert(
         'Emergency',
         'The emergency was successfully sent to the Hospital, Please do not go far from your current location.',
@@ -35,11 +35,16 @@ const slice = createSlice({
     sendingLocationFailed: (location, action) => {
       location.error = action.payload;
       location.loading = false;
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: action.payload,
-      });
+      Alert.alert(
+        'Sorry Emergency was not sent',
+        action.payload,
+        [
+          {
+            text: 'OK',
+          },
+        ],
+        { cancelable: false },
+      );
     },
   },
 });

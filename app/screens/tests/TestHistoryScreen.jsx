@@ -25,15 +25,17 @@ import Preloader from '../../components/common/Preloader';
 const TestHistoryScreen = ({
   tests,
   loadTests,
-  loading,
   removeTest,
   sendLocation,
   sending,
+  loading,
 }) => {
   useEffect(() => {
     loadTests();
   }, []);
+  const [loading2, setLoading] = React.useState(false);
   const handeSendLocation = async () => {
+    setLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert(
@@ -42,6 +44,9 @@ const TestHistoryScreen = ({
       return;
     }
     let location = await Location.getCurrentPositionAsync({});
+    if (location) {
+      setLoading(false);
+    }
     const { latitude, longitude, altitude } = location.coords;
     sendLocation({ latitude, longitude, altitude });
   };
@@ -86,9 +91,10 @@ const TestHistoryScreen = ({
     );
   };
 
+  console.log(loading);
   return (
     <Screen style={styles.container}>
-      {sending ? (
+      {sending || loading2 ? (
         <Preloader />
       ) : (
         <>

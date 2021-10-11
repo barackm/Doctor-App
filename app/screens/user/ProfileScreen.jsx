@@ -29,8 +29,8 @@ import Preloader from '../../components/common/Preloader';
 import { logoutUser } from '../../store/reducers/auth';
 import renderProfilePicture from '../../utils/renderProfileImageUrl';
 
-const ProfileScreen = ({ navigation, loginUser, logoutUser }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+const ProfileScreen = ({ navigation, loginUser, logoutUser, currentUser }) => {
+  // const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     getToken();

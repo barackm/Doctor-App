@@ -36,6 +36,22 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
     (conversation) => conversation.messages.length > 0,
   );
 
+  const goToChatRoom = (item) => {
+    if (currentUser.status === 'Pending' || currentUser.status === 'Inactive') {
+      alert(
+        'You need to be approved by an admin to chat with Doctors. Kindly contact the Hospital for further explainations',
+      );
+    } else {
+      navigation.navigate('Chat', {
+        id: item.item._id,
+        name:
+          item.item.participents[0]._id === currentUser._id
+            ? item.item.participents[1].name
+            : item.item.participents[0].name,
+        image: 'https://i.pravatar.cc/300',
+      });
+    }
+  };
   return (
     <Screen style={styles.container}>
       <View style={styles.header}>
@@ -56,16 +72,7 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
         keyExtractor={(item) => item._id.toString()}
         renderItem={(item) => (
           <ChatListItem
-            onPress={() =>
-              navigation.navigate('Chat', {
-                id: item.item._id,
-                name:
-                  item.item.participents[0]._id === currentUser._id
-                    ? item.item.participents[1].name
-                    : item.item.participents[0].name,
-                image: 'https://i.pravatar.cc/300',
-              })
-            }
+            onPress={() => goToChatRoom(item)}
             item={{
               text: item.item.lastMessage.text,
               time: moment(item.item.lastMessage.createdAt).format('HH:mm'),

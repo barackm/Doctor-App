@@ -21,7 +21,13 @@ import TopDoctorsListItem from './TopDoctorsListItem';
 import Preloader from '../../components/common/Preloader';
 import { loadDoctors } from '../../store/reducers/doctors';
 
-const DoctorsListScreen = ({ loading, doctors, loadDoctors, navigation }) => {
+const DoctorsListScreen = ({
+  loading,
+  doctors,
+  loadDoctors,
+  navigation,
+  currentUser,
+}) => {
   useEffect(() => {
     loadDoctors();
   }, []);
@@ -56,6 +62,7 @@ const DoctorsListScreen = ({ loading, doctors, loadDoctors, navigation }) => {
                 navigation={navigation}
                 key={doctor._id}
                 doctor={doctor}
+                currentUser={currentUser}
               />
             ))}
           </ScrollView>
@@ -87,6 +94,7 @@ const DoctorsListScreen = ({ loading, doctors, loadDoctors, navigation }) => {
                 onPress={() => this.props.navigation.navigate('Doctor', doctor)}
                 key={doctor._id}
                 doctor={doctor}
+                currentUser={currentUser}
               />
             ))}
           </View>
@@ -100,6 +108,7 @@ const mapStateToProps = (state) => {
   return {
     doctors: state.entities.doctors.list,
     loading: state.entities.doctors.loading,
+    currentUser: state.auth.currentUser,
   };
 };
 

@@ -8,7 +8,7 @@ import AuthNavigator from './navigation/AuthNavigator';
 import storage from './auth/storage';
 import { loginUserSuccess } from './store/actions/actionCreators';
 
-const Main = ({ isUserAuthenticated, loginUser, socket }) => {
+const Main = ({ isUserAuthenticated, loginUser }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     getToken();
