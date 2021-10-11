@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   ScrollView,
@@ -21,90 +21,80 @@ import TopDoctorsListItem from './TopDoctorsListItem';
 import Preloader from '../../components/common/Preloader';
 import { loadDoctors } from '../../store/reducers/doctors';
 
-class DoctorsListScreen extends React.Component {
-  componentDidMount() {
-    this.props.loadDoctors();
-  }
-
-  updateState = () => {
-    this.setState({ doctors: this.props.doctors });
-  };
-
-  render() {
-    const { loading, doctors } = this.props;
-    return (
-      <Screen style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Doctors</Text>
-          <TouchableOpacity style={styles.categoryItem}>
-            <Text style={styles.categoryName}>Categories</Text>
-            <View style={styles.categoryNumber}>
-              <Text style={styles.number}>5</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        {loading ? (
-          <Preloader />
-        ) : (
-          <ScrollView style={styles.mainView}>
-            <ScrollView
-              horizontal={true}
-              style={styles.categories}
-              showsHorizontalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={loading}
-                  onRefresh={() => this.props.loadDoctors()}
-                />
-              }
-            >
-              {doctors.map((doctor) => (
-                <TopDoctorsListItem
-                  navigation={this.props.navigation}
-                  key={doctor._id}
-                  doctor={doctor}
-                />
-              ))}
-            </ScrollView>
-            <View style={styles.sortingDetails}>
-              <TouchableOpacity style={styles.sortItem}>
-                <Text style={styles.topRelated}>Top Rated </Text>
-                <Entypo
-                  name="chevron-small-down"
-                  size={24}
-                  color={colors.medium}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.sortItem}>
-                <MaterialCommunityIcons
-                  name="sort-alphabetical-variant"
-                  size={20}
-                  color={colors.medium}
-                />
-                <Text style={styles.topRelated}>Sort </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.sortItem}>
-                <Octicons name="settings" size={20} color={colors.medium} />
-                <Text style={styles.topRelated}>Filter </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.doctorsList}>
-              {doctors.map((doctor) => (
-                <ListItem
-                  onPress={() =>
-                    this.props.navigation.navigate('Doctor', doctor)
-                  }
-                  key={doctor._id}
-                  doctor={doctor}
-                />
-              ))}
-            </View>
+const DoctorsListScreen = ({ loading, doctors, loadDoctors, navigation }) => {
+  useEffect(() => {
+    loadDoctors();
+  }, []);
+  return (
+    <Screen style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Doctors</Text>
+        <TouchableOpacity style={styles.categoryItem}>
+          <Text style={styles.categoryName}>Categories</Text>
+          <View style={styles.categoryNumber}>
+            <Text style={styles.number}>5</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <ScrollView style={styles.mainView}>
+          <ScrollView
+            horizontal={true}
+            style={styles.categories}
+            showsHorizontalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => loadDoctors()}
+              />
+            }
+          >
+            {doctors.map((doctor) => (
+              <TopDoctorsListItem
+                navigation={navigation}
+                key={doctor._id}
+                doctor={doctor}
+              />
+            ))}
           </ScrollView>
-        )}
-      </Screen>
-    );
-  }
-}
+          <View style={styles.sortingDetails}>
+            <TouchableOpacity style={styles.sortItem}>
+              <Text style={styles.topRelated}>Top Rated </Text>
+              <Entypo
+                name="chevron-small-down"
+                size={24}
+                color={colors.medium}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sortItem}>
+              <MaterialCommunityIcons
+                name="sort-alphabetical-variant"
+                size={20}
+                color={colors.medium}
+              />
+              <Text style={styles.topRelated}>Sort </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sortItem}>
+              <Octicons name="settings" size={20} color={colors.medium} />
+              <Text style={styles.topRelated}>Filter </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.doctorsList}>
+            {doctors.map((doctor) => (
+              <ListItem
+                onPress={() => this.props.navigation.navigate('Doctor', doctor)}
+                key={doctor._id}
+                doctor={doctor}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
+    </Screen>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import jwtDecode from 'jwt-decode';
@@ -9,7 +9,7 @@ import storage from './auth/storage';
 import { loginUserSuccess } from './store/actions/actionCreators';
 
 const Main = ({ isUserAuthenticated, loginUser, socket }) => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     getToken();
   });
@@ -19,7 +19,6 @@ const Main = ({ isUserAuthenticated, loginUser, socket }) => {
       setIsAuthenticated(token || isUserAuthenticated ? true : false);
       if (token) {
         const decoded = jwtDecode(token);
-        window.token = token;
         loginUser(decoded);
       }
     } catch (error) {

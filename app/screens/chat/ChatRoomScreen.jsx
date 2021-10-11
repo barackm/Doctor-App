@@ -138,7 +138,7 @@ class ChatRoomScreen extends PureComponent {
             style={styles.editorMessagesContainer}
             data={messages}
             keyExtractor={(item) => item._id.toString()}
-            // keep scroll position at the bottom
+            contentInset={{ bottom: 30 }}
             ref="flatList"
             onContentSizeChange={() => {
               setTimeout(() => this.refs.flatList.scrollToEnd(), 0);
@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingTop: 10,
+    paddingBottom: 60,
   },
 });
 

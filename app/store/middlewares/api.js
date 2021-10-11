@@ -46,11 +46,13 @@ const api =
         ? dispatch({
             type: onError,
             payload:
-              (error.response && error.response.data) || 'There was an error',
+              (error.response && error.response.data) ||
+              'There was a server error',
           })
         : dispatch(
             actions.apiCallFailed(
-              (error.response && error.response.data) || 'There was an error',
+              (error.response && error.response.data) ||
+                'There was a server error',
             ),
           );
     }

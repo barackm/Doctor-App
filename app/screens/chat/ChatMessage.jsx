@@ -49,7 +49,7 @@ export default function ChatMessage({ message, currentUser }) {
       </View>
       {!isCurrentUser && (
         <View style={styles.dateContainerCurrentUser}>
-          <Text>12:10</Text>
+          <Text>{moment(item.createdAt).format('HH:mm')}</Text>
         </View>
       )}
     </View>

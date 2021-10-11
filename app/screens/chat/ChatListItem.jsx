@@ -35,20 +35,20 @@ export default function ChatListItem({ item, onPress, conversation }) {
           <View
             style={{
               ...styles.message,
-              maxWidth: unreadeMessagesCount > 0 ? '85%' : '',
+              // maxWidth: unreadeMessagesCount > 0 ? '85%' : '',
             }}
           >
             <Text style={styles.messageText} numberOfLines={2}>
               {text}
             </Text>
           </View>
-          {unreadeMessagesCount > 0 && (
+          {/* {unreadeMessagesCount > 0 && (
             <View style={styles.messagesNumber}>
               <Text style={styles.messageNumberText}>
                 {unreadeMessagesCount}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
       </View>
     </TouchableOpacity>

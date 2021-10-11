@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import Screen from '../components/Screen';
 import style from '../config/style';
 import colors from '../config/colors';

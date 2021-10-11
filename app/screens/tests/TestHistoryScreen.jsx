@@ -7,6 +7,8 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
+import * as Location from 'expo-location';
+
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../../config/colors';
 import { connect } from 'react-redux';
@@ -17,11 +19,33 @@ import {
   loadTests,
   removeTest,
 } from '../../store/reducers/tests';
+import { sendLocation } from '../../store/reducers/location';
+import Preloader from '../../components/common/Preloader';
 
-const TestHistoryScreen = ({ tests, loadTests, loading, removeTest }) => {
+const TestHistoryScreen = ({
+  tests,
+  loadTests,
+  loading,
+  removeTest,
+  sendLocation,
+  sending,
+}) => {
   useEffect(() => {
     loadTests();
   }, []);
+  const handeSendLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert(
+        'Location permission not granted, You need to allow the app to get your current location for the hospital to come and assist you.',
+      );
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    const { latitude, longitude, altitude } = location.coords;
+    sendLocation({ latitude, longitude, altitude });
+  };
+
   const handleSendEmergency = () => {
     Alert.alert(
       'Send Emergency',
@@ -34,7 +58,7 @@ const TestHistoryScreen = ({ tests, loadTests, loading, removeTest }) => {
         {
           text: 'Send',
           onPress: () => {
-            console.log('send emergency');
+            handeSendLocation();
           },
         },
       ],
@@ -42,7 +66,7 @@ const TestHistoryScreen = ({ tests, loadTests, loading, removeTest }) => {
     );
   };
 
-  const handleRemoveTest = (t) => {
+  const handleRemoveTest = () => {
     Alert.alert(
       'Are you sure you want to delete this test?',
       '',
@@ -64,27 +88,39 @@ const TestHistoryScreen = ({ tests, loadTests, loading, removeTest }) => {
 
   return (
     <Screen style={styles.container}>
-      <FlatList
-        data={tests}
-        onRefresh={loadTests}
-        refreshing={loading}
-        keyExtractor={(item) => item._id.toString()}
-        renderItem={({ item }) => (
-          <Testitem test={item} onRemoveTest={handleRemoveTest} />
-        )}
-        style={styles.list}
-        ListEmptyComponent={() => (
-          <View style={styles.noTestsContainer}>
-            <Text style={styles.noTest}>No tests Found, Pull to refresh</Text>
-          </View>
-        )}
-      />
-      <TouchableOpacity
-        onPress={handleSendEmergency}
-        style={styles.emergencyBtnContainer}
-      >
-        <MaterialIcons name="report-problem" size={30} color={colors.white} />
-      </TouchableOpacity>
+      {sending ? (
+        <Preloader />
+      ) : (
+        <>
+          <FlatList
+            data={tests}
+            onRefresh={loadTests}
+            refreshing={loading}
+            keyExtractor={(item) => item._id.toString()}
+            renderItem={({ item }) => (
+              <Testitem test={item} onRemoveTest={handleRemoveTest} />
+            )}
+            style={styles.list}
+            ListEmptyComponent={() => (
+              <View style={styles.noTestsContainer}>
+                <Text style={styles.noTest}>
+                  No tests Found, Pull to refresh
+                </Text>
+              </View>
+            )}
+          />
+          <TouchableOpacity
+            onPress={handleSendEmergency}
+            style={styles.emergencyBtnContainer}
+          >
+            <MaterialIcons
+              name="report-problem"
+              size={30}
+              color={colors.white}
+            />
+          </TouchableOpacity>
+        </>
+      )}
     </Screen>
   );
 };
@@ -133,12 +169,14 @@ const mapStateToProps = (state) => {
   return {
     tests: state.entities.tests.list,
     loading: state.entities.tests.loading,
+    sending: state.entities.location.loading,
   };
 };
 const mapDispatchToProps = {
   loadTests: () => loadTests(),
   loadPetientTests: (id) => loadPetientTests(id),
   removeTest: (id) => removeTest(id),
+  sendLocation: (location) => sendLocation(location),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestHistoryScreen);
