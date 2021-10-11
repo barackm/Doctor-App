@@ -29,12 +29,19 @@ const TestHistoryScreen = ({
   sendLocation,
   sending,
   loading,
+  currentUser,
 }) => {
   useEffect(() => {
     loadTests();
   }, []);
   const [loading2, setLoading] = React.useState(false);
   const handeSendLocation = async () => {
+    if (currentUser.status === 'Pending' || currentUser.status === 'Inactive') {
+      Alert.alert(
+        'You are not allowed to send an Emergency since you are in status pending or inactive. Kindly contact the Hospital for further explainations.',
+      );
+      return;
+    }
     setLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -176,6 +183,7 @@ const mapStateToProps = (state) => {
     tests: state.entities.tests.list,
     loading: state.entities.tests.loading,
     sending: state.entities.location.loading,
+    currentUser: state.auth.currentUser,
   };
 };
 const mapDispatchToProps = {

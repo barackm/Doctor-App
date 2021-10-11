@@ -51,7 +51,7 @@ const DoctorProfileScreen = (props) => {
                   currentUser.status === 'Pending' ||
                   currentUser.status === 'Inactive'
                     ? alert(
-                        'You need to be approved by an admin to chat with Doctor. Kindly contact the Hospital for further explainations',
+                        'You need to be approved by an admin to chat with Doctor since you are in status pending or inactive. Kindly contact the Hospital for further explainations',
                       )
                     : navigation.navigate('Chat', {
                         id: _id,
@@ -116,7 +116,7 @@ const DoctorProfileScreen = (props) => {
                   currentUser.status === 'Pending' ||
                   currentUser.status === 'Inactive'
                     ? alert(
-                        'You need to be approved by an admin to book an appointment with a doctor. Kindly contact the Hospital for further explainations.',
+                        'You need to be approved by an admin to book an appointment with a doctor since you are in status pending or inactive. Kindly contact the Hospital for further explainations.',
                       )
                     : navigation.navigate('Booking', _id)
                 }

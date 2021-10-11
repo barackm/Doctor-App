@@ -39,7 +39,7 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
   const goToChatRoom = (item) => {
     if (currentUser.status === 'Pending' || currentUser.status === 'Inactive') {
       alert(
-        'You need to be approved by an admin to chat with Doctors. Kindly contact the Hospital for further explainations',
+        'You need to be approved by an admin to chat with Doctors since you are in status pending or inactive. Kindly contact the Hospital for further explainations',
       );
     } else {
       navigation.navigate('Chat', {
