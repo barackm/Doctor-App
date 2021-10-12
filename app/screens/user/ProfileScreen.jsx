@@ -29,8 +29,13 @@ import Preloader from '../../components/common/Preloader';
 import { logoutUser } from '../../store/reducers/auth';
 import renderProfilePicture from '../../utils/renderProfileImageUrl';
 
-const ProfileScreen = ({ navigation, loginUser, logoutUser, currentUser }) => {
-  // const [currentUser, setCurrentUser] = useState(null);
+const ProfileScreen = ({
+  navigation,
+  loginUser,
+  logoutUser,
+  stateCurrentUser,
+}) => {
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     getToken();
@@ -50,8 +55,10 @@ const ProfileScreen = ({ navigation, loginUser, logoutUser, currentUser }) => {
   const { name, lastName } = currentUser || {};
   const logout = () => {
     logoutUser();
+    navigation.navigate('Messages');
   };
 
+  console.log(stateCurrentUser);
   return (
     <ScrollView style={styles.mainView}>
       {!currentUser ? (
@@ -220,7 +227,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  currentUser: state.auth.currentUser,
+  stateCurrentUser: state.auth.currentUser,
 });
 
 const mapDispatchToProps = {

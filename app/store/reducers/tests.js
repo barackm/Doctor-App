@@ -38,10 +38,10 @@ export default slice.reducer;
 const { testsRequested, testRemoved, testsReceived, testsRequestFailed } =
   slice.actions;
 
-export const loadTests = () => (dispatch) => {
+export const loadTests = (id) => (dispatch) => {
   dispatch(
     actions.apiCallBegan({
-      url,
+      url: id ? `${url}/patient/${id}` : url,
       onStart: testsRequested.type,
       onSuccess: testsReceived.type,
       onError: testsRequestFailed.type,
@@ -55,17 +55,6 @@ export const removeTest = (id) => (dispatch) => {
       url: `${url}/${id}`,
       method: 'DELETE',
       onSuccess: testRemoved.type,
-    }),
-  );
-};
-
-export const loadPetientTests = (id) => (dispatch) => {
-  dispatch(
-    actions.apiCallBegan({
-      url: `${url}/patient/${id}`,
-      onStart: testsRequested.type,
-      onSuccess: testsReceived.type,
-      onError: testsRequestFailed.type,
     }),
   );
 };

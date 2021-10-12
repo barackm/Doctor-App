@@ -48,7 +48,12 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
           item.item.participents[0]._id === currentUser._id
             ? item.item.participents[1].name
             : item.item.participents[0].name,
+        patient:
+          item.item.participents[0]._id === currentUser._id
+            ? item.item.participents[1]
+            : item.item.participents[0],
         image: 'https://i.pravatar.cc/300',
+        currentUser,
       });
     }
   };

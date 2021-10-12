@@ -12,12 +12,20 @@ import colors from '../../config/colors';
 import style from '../../config/style';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import jwtDecode from 'jwt-decode';
+
 import capitalize from '../../utils/capitalize';
+import storage from '../../auth/storage';
 
 const DoctorProfileScreen = (props) => {
-  const { navigation, route, currentUser } = props;
+  const { navigation, route } = props;
+  const [currentUser, setCurrentUser] = React.useState(null);
   const { _id, name, lastName, phoneNumber } = route.params;
-  console.log(currentUser);
+  storage.getAuthToken().then((token) => {
+    if (token) {
+      setCurrentUser(jwtDecode(token));
+    }
+  });
   return (
     <ScrollView style={styles.mainView}>
       <Screen style={styles.container}>
@@ -58,6 +66,8 @@ const DoctorProfileScreen = (props) => {
                         name,
                         image:
                           'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                        currentUser,
+                        patientId: null,
                       })
                 }
                 style={styles.headerSubTitle}

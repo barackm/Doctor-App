@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import * as Location from 'expo-location';
+import jwtDecode from 'jwt-decode';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../../config/colors';
@@ -15,12 +16,13 @@ import { connect } from 'react-redux';
 import Screen from '../../components/Screen';
 import Testitem from './TestItem';
 import {
-  loadPetientTests,
+  loadPatientTests,
   loadTests,
   removeTest,
 } from '../../store/reducers/tests';
 import { sendLocation } from '../../store/reducers/location';
 import Preloader from '../../components/common/Preloader';
+import storage from '../../auth/storage';
 
 const TestHistoryScreen = ({
   tests,
@@ -29,12 +31,27 @@ const TestHistoryScreen = ({
   sendLocation,
   sending,
   loading,
-  currentUser,
+  route,
 }) => {
-  useEffect(() => {
-    loadTests();
-  }, []);
   const [loading2, setLoading] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(null);
+  useEffect(() => {
+    if (route.params) {
+      loadTests(route.params.patient._id);
+    } else {
+      loadTests(null);
+    }
+    // make a clean up function
+    storage.getAuthToken().then((token) => {
+      if (token) {
+        setCurrentUser(jwtDecode(token));
+      }
+    });
+    return () => {
+      // cleanup
+    };
+  }, []);
+
   const handeSendLocation = async () => {
     if (currentUser.status === 'Pending' || currentUser.status === 'Inactive') {
       Alert.alert(
@@ -98,7 +115,13 @@ const TestHistoryScreen = ({
     );
   };
 
-  console.log(loading);
+  const handleRefresh = () => {
+    if (route.params) {
+      loadTests(route.params.patient._id);
+    } else {
+      loadTests(null);
+    }
+  };
   return (
     <Screen style={styles.container}>
       {sending || loading2 ? (
@@ -107,11 +130,15 @@ const TestHistoryScreen = ({
         <>
           <FlatList
             data={tests}
-            onRefresh={loadTests}
+            onRefresh={handleRefresh}
             refreshing={loading}
             keyExtractor={(item) => item._id.toString()}
             renderItem={({ item }) => (
-              <Testitem test={item} onRemoveTest={handleRemoveTest} />
+              <Testitem
+                test={item}
+                onRemoveTest={handleRemoveTest}
+                route={route}
+              />
             )}
             style={styles.list}
             ListEmptyComponent={() => (
@@ -122,16 +149,20 @@ const TestHistoryScreen = ({
               </View>
             )}
           />
-          <TouchableOpacity
-            onPress={handleSendEmergency}
-            style={styles.emergencyBtnContainer}
-          >
-            <MaterialIcons
-              name="report-problem"
-              size={30}
-              color={colors.white}
-            />
-          </TouchableOpacity>
+          {route.params ? (
+            <></>
+          ) : (
+            <TouchableOpacity
+              onPress={handleSendEmergency}
+              style={styles.emergencyBtnContainer}
+            >
+              <MaterialIcons
+                name="report-problem"
+                size={30}
+                color={colors.white}
+              />
+            </TouchableOpacity>
+          )}
         </>
       )}
     </Screen>
@@ -187,8 +218,8 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = {
-  loadTests: () => loadTests(),
-  loadPetientTests: (id) => loadPetientTests(id),
+  loadTests: (id) => loadTests(id),
+  loadPatientTests: (id) => loadPatientTests(id),
   removeTest: (id) => removeTest(id),
   sendLocation: (location) => sendLocation(location),
 };

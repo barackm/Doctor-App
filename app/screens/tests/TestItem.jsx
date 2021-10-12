@@ -6,7 +6,7 @@ import colors from '../../config/colors';
 import style from '../../config/style';
 import moment from 'moment';
 
-const Testitem = ({ test, onRemoveTest }) => {
+const Testitem = ({ test, onRemoveTest, route }) => {
   const renderTestColor = (t, colors) => {
     if (
       t.heartRate.includes('⚠️') ||
@@ -32,7 +32,9 @@ const Testitem = ({ test, onRemoveTest }) => {
         backgroundColor: renderTestColor(test, colors).bg,
       }}
     >
-      <View style={styles.testTime}>
+      <View
+        style={{ ...styles.testTime, paddingVertical: route.params ? 5 : 0 }}
+      >
         <Text
           style={{
             ...styles.testTimeText,
@@ -41,9 +43,13 @@ const Testitem = ({ test, onRemoveTest }) => {
         >
           Uploaded {moment(test.createdAt).fromNow()}
         </Text>
-        <TouchableOpacity onPress={() => onRemoveTest(test)}>
-          <EvilIcons name="trash" size={35} color={colors.danger} />
-        </TouchableOpacity>
+        {route.params ? (
+          <></>
+        ) : (
+          <TouchableOpacity onPress={() => onRemoveTest(test)}>
+            <EvilIcons name="trash" size={35} color={colors.danger} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.testDetails}>
         <View style={styles.testItem}>

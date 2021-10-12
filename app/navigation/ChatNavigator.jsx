@@ -2,7 +2,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ChatRoomScreen from '../screens/chat/ChatRoomScreen';
 import ChatListScreen from '../screens/chat/ChatListScreen';
-import { Image } from 'react-native';
+import TestHistoryScreen from '../screens/tests/TestHistoryScreen';
+import { Fontisto } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
+import colors from '../config/colors';
 
 const Stack = createStackNavigator();
 
@@ -16,17 +19,34 @@ const ChatNavigator = () => {
       />
       <Stack.Screen
         name="Chat"
-        options={({ route }) => ({
+        options={({ route, navigation }) => ({
           title: route.params.name,
-          headerRight: () => (
-            <Image
-              source={{ uri: route.params.imageUrl }}
-              style={{ width: 40, height: 40, borderRadius: 20 }}
-            />
-          ),
+          headerRight: () =>
+            route.params.currentUser.isDoctor && route.params.patient ? (
+              <TouchableOpacity
+                style={{ paddingHorizontal: 15 }}
+                onPress={() =>
+                  navigation.navigate('Tests', {
+                    patientId: route.params.patientId,
+                    patient: route.params.patient,
+                  })
+                }
+              >
+                <Fontisto name="test-tube" size={24} color={colors.danger} />
+              </TouchableOpacity>
+            ) : (
+              ''
+            ),
           headerBackTitle: null,
         })}
         component={ChatRoomScreen}
+      />
+      <Stack.Screen
+        name="Tests"
+        component={TestHistoryScreen}
+        options={({ route }) => ({
+          title: `${route.params.patient.name}'s tests`,
+        })}
       />
     </Stack.Navigator>
   );

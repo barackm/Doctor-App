@@ -12,6 +12,7 @@ import {
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import EmojiSelector from 'react-native-emoji-selector';
 import { connect } from 'react-redux';
+import { Fontisto } from '@expo/vector-icons';
 
 import colors from '../../config/colors';
 import Screen from '../../components/Screen';
@@ -35,7 +36,7 @@ class ChatRoomScreen extends PureComponent {
   };
 
   componentDidMount() {
-    const { loadConversations, conversations } = this.props;
+    const { loadConversations, conversations, navigation } = this.props;
     window.hiddenTabBar = false;
     this.getCurrentUser();
     loadConversations();
@@ -77,7 +78,7 @@ class ChatRoomScreen extends PureComponent {
     storage.getAuthToken().then((token) => {
       const currentUser = jwtDecode(token);
       if (conversationId === 'new') {
-        recipientId = route.params;
+        recipientId = route.params.id;
       } else {
         recipientId =
           conversation.participents[0]._id === currentUser._id
@@ -127,6 +128,7 @@ class ChatRoomScreen extends PureComponent {
     const messageAvailable = this.state.message.trim().length;
     this.getConversation(this.props.conversations);
     const { currentUser, messages } = this.state;
+
     return (
       <KeyboardAvoidingView
         style={styles.safeView}
