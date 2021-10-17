@@ -55,7 +55,6 @@ const ProfileScreen = ({
   const { name, lastName } = currentUser || {};
   const logout = () => {
     logoutUser();
-    navigation.navigate('Messages');
   };
 
   console.log(stateCurrentUser);
@@ -142,9 +141,9 @@ const ProfileScreen = ({
               onPress={() => navigation.navigate('Payments History')}
             />
             <MenuItem
-              item={{ name: 'Settings' }}
-              icon={<Octicons name="settings" size={20} color={colors.white} />}
-              onPress={() => navigation.navigate('Settings')}
+              item={{ name: 'About us' }}
+              icon={<Octicons name="info" size={20} color={colors.white} />}
+              onPress={() => navigation.navigate('About')}
             />
             <MenuItem
               item={{ name: 'Logout' }}

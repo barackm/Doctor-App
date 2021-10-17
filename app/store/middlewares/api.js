@@ -1,10 +1,10 @@
 import * as actions from '../actions/api';
 import http from '../../services/http';
-import storage from '../../auth/storage';
 import * as SecureStore from 'expo-secure-store';
+import jwtDecode from 'jwt-decode';
 
-const baseURL = 'http://192.168.1.69:5000/api';
-
+const baseURL = 'http://192.168.1.65:5000/api';
+// https://aqueous-gorge-50977.herokuapp.com
 const api =
   ({ dispatch }) =>
   (next) =>
@@ -30,11 +30,11 @@ const api =
         onSuccess &&
         (onSuccess === 'auth/userLoggedin' || onSuccess === 'auth/userSignedup')
       ) {
-        const authToken = response.headers['x-auth-token'];
+        const authToken = response.data;
         setAuthToken(authToken);
         dispatch({
           type: onSuccess,
-          payload: { data: response.data, token: authToken },
+          payload: { data: jwtDecode(authToken) },
         });
       } else {
         onSuccess
@@ -42,6 +42,7 @@ const api =
           : dispatch(actions.apiCallSucceeded(response.data));
       }
     } catch (error) {
+      console.log(error.response);
       onError
         ? dispatch({
             type: onError,

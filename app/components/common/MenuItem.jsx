@@ -23,12 +23,13 @@ export default function ChatListItem({ item, onPress, icon, image }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 5,
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
     backgroundColor: colors.white,
     paddingVertical: 8,
+    borderBottomColor: colors.lightDark,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 
   profileIcon: {

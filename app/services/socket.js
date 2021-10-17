@@ -5,11 +5,13 @@ import storage from '../auth/storage';
 import * as actions from '../store/actions/actionCreators';
 import store from '../store/configureStore';
 
-const apiEndpoint = 'http://192.168.1.69:5000';
+const apiEndpoint = 'http://192.168.1.65:5000/';
 
 const socket = io(apiEndpoint);
 
-socket.on('connect', () => {});
+socket.on('connect', () => {
+  console.log('connected...');
+});
 
 socket.on('new-message', (conversation) => {
   storage.getAuthToken().then((token) => {

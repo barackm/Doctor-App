@@ -95,7 +95,7 @@ const TestHistoryScreen = ({
     );
   };
 
-  const handleRemoveTest = () => {
+  const handleRemoveTest = (t) => {
     Alert.alert(
       'Are you sure you want to delete this test?',
       '',

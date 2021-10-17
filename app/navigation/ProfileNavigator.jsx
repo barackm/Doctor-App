@@ -6,6 +6,7 @@ import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
 import TestHistoryScreen from '../screens/tests/TestHistoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import EditProfileScreen from '../screens/user/EditProfileScreen';
+import Aboutscreen from '../screens/user/AboutScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const ProfileNavigator = ({ navigation, route }) => {
       <Stack.Screen name="Payments History" component={PaymentHistoryScreen} />
       <Stack.Screen name="Tests History" component={TestHistoryScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="About" component={Aboutscreen} />
       <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
     </Stack.Navigator>
   );
