@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "MyDoctor",
-    "slug": "MyDoctor",
+    "name": "My Doctor",
+    "slug": "my-doctor",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo1024.png",
     "splash": {
       "image": "./assets/splash-img.png",
       "resizeMode": "contain",
@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -25,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "My Doctor is a mobile application that was developed and presented by\n          ULK Kigali students Baraka Mukelenga and Moise Rushanika from Electronics and Telecommunication in the\n          the academic Year 2020-2021, to help the population keep in touch with\n          their doctors during the pandemic period of coronavirus, and track\n          their tests were taken from our electronic health test kit.",
+    "githubUrl": "https://github.com/barackm/Doctor-App"
   }
 }

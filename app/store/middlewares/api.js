@@ -3,8 +3,8 @@ import http from '../../services/http';
 import * as SecureStore from 'expo-secure-store';
 import jwtDecode from 'jwt-decode';
 
-const baseURL = 'http://192.168.1.65:5000/api';
-// https://aqueous-gorge-50977.herokuapp.com
+// const baseURL = 'http://192.168.1.65:5000/api';
+const baseURL = 'https://aqueous-gorge-50977.herokuapp.com/api';
 const api =
   ({ dispatch }) =>
   (next) =>

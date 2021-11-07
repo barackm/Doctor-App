@@ -28,6 +28,7 @@ import {
   loadAppointments,
   removeAppointment,
 } from '../../store/reducers/appointments';
+import renderProfilePicture from '../../utils/renderProfileImageUrl';
 
 const validationSchema = Yup.object().shape({
   appointmentDescription: Yup.string().min(10).required(),
@@ -198,7 +199,10 @@ const BookingCalenderScreen = ({
                     <View style={styles.doctorImage}>
                       <Image
                         source={{
-                          uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                          uri: renderProfilePicture(
+                            doctor.profilePicture,
+                            doctor,
+                          ),
                         }}
                         style={styles.image}
                       />

@@ -12,7 +12,7 @@ const Main = ({ isUserAuthenticated, loginUser }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     getToken();
-  });
+  }, [isUserAuthenticated]);
   const getToken = async () => {
     try {
       const token = await storage.getAuthToken();

@@ -15,12 +15,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import jwtDecode from 'jwt-decode';
 
 import capitalize from '../../utils/capitalize';
+import renderProfilePicture from '../../utils/renderProfileImageUrl';
 import storage from '../../auth/storage';
 
 const DoctorProfileScreen = (props) => {
   const { navigation, route } = props;
   const [currentUser, setCurrentUser] = React.useState(null);
-  const { _id, name, lastName, phoneNumber } = route.params;
+  const { _id, name, lastName, phoneNumber, email, imageUrl } = route.params;
   storage.getAuthToken().then((token) => {
     if (token) {
       setCurrentUser(jwtDecode(token));
@@ -36,7 +37,7 @@ const DoctorProfileScreen = (props) => {
               <Image
                 style={styles.profile}
                 source={{
-                  uri: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                  uri: renderProfilePicture(imageUrl, route.params),
                 }}
               />
             </View>
@@ -190,9 +191,7 @@ const DoctorProfileScreen = (props) => {
             <View style={styles.educationErea}>
               <Text style={styles.educationTitle}>CONTACTS</Text>
               <Text style={styles.educationDetail}>{phoneNumber}</Text>
-              <Text style={styles.educationDetail}>
-                Email: nathan@gmail.com
-              </Text>
+              <Text style={styles.educationDetail}>Email: {email}</Text>
             </View>
           </View>
         </View>

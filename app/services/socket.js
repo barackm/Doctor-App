@@ -5,7 +5,7 @@ import storage from '../auth/storage';
 import * as actions from '../store/actions/actionCreators';
 import store from '../store/configureStore';
 
-const apiEndpoint = 'http://192.168.1.65:5000/';
+const apiEndpoint = 'https://aqueous-gorge-50977.herokuapp.com/';
 
 const socket = io(apiEndpoint);
 

@@ -38,9 +38,10 @@ const Aboutscreen = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>
           My Doctor is a mobile application that was developed and presented by
-          ULK Kigali students from Electronics and Telecommunication in the
+          ULK Kigali students from Electronics and Telecommunication in the the
           academic Year 2020-2021, to help the population keep in touch with
-          their doctors during the pendamic period of corana virus.
+          their doctors during the pandemic period of coronavirus, and track
+          their tests were taken from our electronic health test kit.
         </Text>
       </View>
       <View style={styles.authorItemWrapper}>
