@@ -21,7 +21,12 @@ import jwtDecode from 'jwt-decode';
 import storage from '../../auth/storage';
 import { loadConversations } from '../../store/reducers/conversations';
 
-const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
+const ChatListScreen = ({
+  navigation,
+  conversations,
+  loadConversations,
+  loading,
+}) => {
   const [currentUser, setCurrentUser] = React.useState('');
   useEffect(() => {
     getAuthToken();
@@ -57,6 +62,18 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
       });
     }
   };
+  const renderEmptyList = () => {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>
+          There is nothing here for now, Start a new conversation with a doctor
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Doctors')}>
+          <Text style={styles.emptyListTextLink}> Here</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   return (
     <Screen style={styles.container}>
       <View style={styles.header}>
@@ -89,6 +106,8 @@ const ChatListScreen = ({ navigation, conversations, loadConversations }) => {
             }}
           />
         )}
+        loading={loading}
+        ListEmptyComponent={renderEmptyList}
       />
       <TouchableOpacity
         style={styles.newChat}
@@ -166,12 +185,31 @@ const styles = StyleSheet.create({
     shadowRadius: 2.84,
     elevation: 6,
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    marginTop: 20,
+  },
+  emptyText: {
+    ...style.text,
+    fontSize: 20,
+    color: colors.dark,
+  },
+  emptyListTextLink: {
+    ...style.text,
+    fontSize: 20,
+    color: colors.primary,
+    fontWeight: 'bold',
+  },
 });
 
 const mapStateToProps = (state) => {
   return {
     conversations: state.entities.conversations.list,
     currentUser: state.auth.currentUser,
+    loading: state.entities.conversations.loading,
   };
 };
 

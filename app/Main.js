@@ -19,9 +19,9 @@ const Main = ({ loginUser }) => {
     try {
       const token = await storage.getAuthToken();
       if (token) {
+        setLoading(false);
         const decoded = jwtDecode(token);
         loginUser(decoded);
-        setLoading(false);
       }
     } catch (error) {
       setLoading(false);

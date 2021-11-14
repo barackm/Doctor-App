@@ -91,7 +91,7 @@ const DoctorsListScreen = ({
           <View style={styles.doctorsList}>
             {doctors.map((doctor) => (
               <ListItem
-                onPress={() => this.props.navigation.navigate('Doctor', doctor)}
+                onPress={() => navigation.navigate('Doctor', doctor)}
                 key={doctor._id}
                 doctor={doctor}
                 currentUser={currentUser}
