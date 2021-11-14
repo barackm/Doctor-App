@@ -7,3 +7,5 @@ export const conversationUpdated = createAction(
   'conversations/conversationUpdated',
 );
 export const testAdded = createAction('tests/testAdded');
+
+export const loginUserSuccess = createAction('auth/userLoggedin');

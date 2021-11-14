@@ -1,43 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import jwtDecode from 'jwt-decode';
 
 import AppNavigator from './navigation/AppNavigator';
 import AuthNavigator from './navigation/AuthNavigator';
+import Preloader from './components/common/Preloader';
 import storage from './auth/storage';
 import { loginUserSuccess } from './store/actions/actionCreators';
 
-const Main = ({ isUserAuthenticated, loginUser }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const Main = ({ loginUser }) => {
+  let isUserAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getToken();
   }, [isUserAuthenticated]);
   const getToken = async () => {
     try {
       const token = await storage.getAuthToken();
-      setIsAuthenticated(token || isUserAuthenticated ? true : false);
       if (token) {
         const decoded = jwtDecode(token);
         loginUser(decoded);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       return null;
     }
   };
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <AppNavigator /> : <AuthNavigator />}
+      {loading ? (
+        <Preloader />
+      ) : (
+        <>{isUserAuthenticated ? <AppNavigator /> : <AuthNavigator />}</>
+      )}
     </NavigationContainer>
   );
 };
 
-const mapStateToProps = (state) => ({
-  isUserAuthenticated: state.auth.isAuthenticated,
-});
 const mapDispatchToProps = {
   loginUser: (user) => loginUserSuccess(user),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(null, mapDispatchToProps)(Main);

@@ -41,7 +41,7 @@ const Aboutscreen = () => {
           ULK Kigali students from Electronics and Telecommunication in the the
           academic Year 2020-2021, to help the population keep in touch with
           their doctors during the pandemic period of coronavirus, and track
-          their tests were taken from our electronic health test kit.
+          their tests taken from our electronic health test kit.
         </Text>
       </View>
       <View style={styles.authorItemWrapper}>
