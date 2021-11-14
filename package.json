@@ -18,6 +18,7 @@
     "axios": "^0.21.1",
     "expo": "~41.0.1",
     "expo-linear-gradient": "~9.1.0",
+    "expo-location": "~12.0.4",
     "expo-secure-store": "~10.1.0",
     "expo-status-bar": "~1.0.4",
     "fb-watchman": "^2.0.1",
@@ -42,8 +43,7 @@
     "remote-redux-devtools": "^0.5.16",
     "socket.io-client": "^4.2.0",
     "watchman": "^1.0.0",
-    "yup": "^0.32.9",
-    "expo-location": "~12.0.4"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
