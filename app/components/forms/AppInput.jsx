@@ -10,6 +10,7 @@ export default function AppInput({
   multiline = false,
   label,
   name,
+  autoCapitalize = 'none',
 }) {
   const { handleChange, values } = useFormikContext();
   return (
@@ -21,6 +22,7 @@ export default function AppInput({
           placeholder={placeholder}
           multiline={multiline}
           value={values[name]}
+          autoCapitalize={autoCapitalize}
           onChangeText={handleChange(name)}
         />
       </View>

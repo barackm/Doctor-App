@@ -38,44 +38,42 @@ const Aboutscreen = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>
           My Doctor is a mobile application that was developed and presented by
-          ULK Kigali students from Electronics and Telecommunication in the the
-          academic Year 2020-2021, to help the population keep in touch with
-          their doctors during the pandemic period of coronavirus, and track
-          their tests taken from our electronic health test kit.
+          ULK Kigali students from Computer Science in the the academic Year
+          2021-2022, to help the population keep in touch with their doctors.
         </Text>
       </View>
       <View style={styles.authorItemWrapper}>
         <View style={styles.authorDetails}>
-          <Text style={styles.authorName}>Baraka Mukelenga</Text>
+          <Text style={styles.authorName}>Alfred Bisimwa</Text>
           <Text style={styles.authorAbout}>Full-stack web developper</Text>
           <View style={styles.socialMediaLinks}>
             <OpenURLButton
-              url="https://github.com/barackm"
+              url='https://github.com/Alfredbis29'
               icon={() => (
-                <AntDesign name="github" size={18} color={colors.light} />
+                <AntDesign name='github' size={18} color={colors.light} />
               )}
             />
             <OpenURLButton
-              url="https://www.linkedin.com/in/baraka-mukelenga/"
+              url='https://www.linkedin.com/in/alfred-bisimwa/'
               icon={() => (
                 <AntDesign
-                  name="linkedin-square"
+                  name='linkedin-square'
                   size={18}
                   color={colors.light}
                 />
               )}
             />
             <OpenURLButton
-              url="https://twitter.com/BarackMukelenga"
+              url='https://twitter.com/AlfredBisimwa1'
               icon={() => (
-                <AntDesign name="twitter" size={18} color={colors.light} />
+                <AntDesign name='twitter' size={18} color={colors.light} />
               )}
             />
             <OpenURLButton
-              url="https://barackm.me"
+              url='https://alfredbis29.github.io/My-portfolio/'
               icon={() => (
                 <MaterialCommunityIcons
-                  name="web"
+                  name='web'
                   size={18}
                   color={colors.light}
                 />
@@ -85,53 +83,7 @@ const Aboutscreen = () => {
         </View>
         <View style={styles.authorImageWrapper}>
           <Image
-            source={require('../../../assets/barack.jpg')}
-            style={styles.authorImage}
-          />
-        </View>
-      </View>
-      <View style={styles.authorItemWrapper}>
-        <View style={styles.authorDetails}>
-          <Text style={styles.authorName}>Moise Rushanika</Text>
-          <Text style={styles.authorAbout}>Full-stack web developper</Text>
-          <View style={styles.socialMediaLinks}>
-            <OpenURLButton
-              url="https://github.com/moise10r"
-              icon={() => (
-                <AntDesign name="github" size={18} color={colors.light} />
-              )}
-            />
-            <OpenURLButton
-              url="https://www.linkedin.com/in/nganulo-rushanika-mo%C3%AFse/"
-              icon={() => (
-                <AntDesign
-                  name="linkedin-square"
-                  size={18}
-                  color={colors.light}
-                />
-              )}
-            />
-            <OpenURLButton
-              url="https://twitter.com/MRushanika"
-              icon={() => (
-                <AntDesign name="twitter" size={18} color={colors.light} />
-              )}
-            />
-            <OpenURLButton
-              url="https://moiser.netlify.app/"
-              icon={() => (
-                <MaterialCommunityIcons
-                  name="web"
-                  size={18}
-                  color={colors.light}
-                />
-              )}
-            />
-          </View>
-        </View>
-        <View style={styles.authorImageWrapper}>
-          <Image
-            source={require('../../../assets/moise.jpeg')}
+            source={require('../../../assets/alfred.png')}
             style={styles.authorImage}
           />
         </View>

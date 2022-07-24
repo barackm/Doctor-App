@@ -85,7 +85,11 @@ const ChatListScreen = ({
             color={colors.primary}
             style={styles.icon}
           />
-          <TextInput placeholder="Search" style={styles.input} />
+          <TextInput
+            placeholder="Search..."
+            autoCapitalize="none"
+            style={styles.input}
+          />
         </View>
       </View>
       <FlatList
